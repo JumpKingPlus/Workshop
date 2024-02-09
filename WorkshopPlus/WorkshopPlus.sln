@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingInstAchievements", "JumpKingInstAchievements\JumpKingInstAchievements.csproj", "{1E1F4010-B793-4B1F-9E84-DCFBF2F17F5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingLastJumpValue", "JumpKingLastJumpValue\JumpKingLastJumpValue.csproj", "{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1E1F4010-B793-4B1F-9E84-DCFBF2F17F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1F4010-B793-4B1F-9E84-DCFBF2F17F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1F4010-B793-4B1F-9E84-DCFBF2F17F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
