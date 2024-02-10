@@ -40,7 +40,7 @@ namespace JumpKingLastJumpValue
             // reset values
             if (__instance.last_result != BTresult.Running)
             {
-                JumpKingLastJumpValue.JumpFrames = 0;
+                JumpKingLastJumpValue.JumpFrames = -1;
             }
 
             // calculating frames

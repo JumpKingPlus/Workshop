@@ -53,9 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ELastJumpDisplayType.cs" />
     <Compile Include="GameLoopDraw.cs" />
     <Compile Include="JumpCalculation.cs" />
     <Compile Include="JumpKingLastJumpValue.cs" />
+    <Compile Include="Menu\LastJumpValueOption.cs" />
+    <Compile Include="Menu\ToggleLastJumpValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
