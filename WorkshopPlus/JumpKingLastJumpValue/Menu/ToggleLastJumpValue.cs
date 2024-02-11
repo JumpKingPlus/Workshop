@@ -9,7 +9,7 @@ namespace JumpKingLastJumpValue.Menu
 {
     public class ToggleLastJumpValue : ITextToggle
     {
-        public ToggleLastJumpValue() : base(JumpKingLastJumpValue.IsEnabled)
+        public ToggleLastJumpValue() : base(JumpKingLastJumpValue.Preferences.IsEnabled)
         {
         }
 
@@ -17,7 +17,7 @@ namespace JumpKingLastJumpValue.Menu
 
         protected override void OnToggle()
         {
-            JumpKingLastJumpValue.IsEnabled = !JumpKingLastJumpValue.IsEnabled;
+            JumpKingLastJumpValue.Preferences.IsEnabled = !JumpKingLastJumpValue.Preferences.IsEnabled;
         }
     }
 }

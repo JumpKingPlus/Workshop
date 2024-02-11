@@ -12,16 +12,16 @@ namespace JumpKingLastJumpValue.Menu
         public LastJumpValueOption() 
             : base(Enum.GetNames(typeof(ELastJumpDisplayType)).Length, (int)ELastJumpDisplayType.Percentage, EdgeMode.Wrap)
         {
-            CurrentOption = (int)JumpKingLastJumpValue.DisplayType;
+            CurrentOption = (int)JumpKingLastJumpValue.Preferences.DisplayType;
         }
 
-        protected override bool CanChange() => JumpKingLastJumpValue.IsEnabled;
+        protected override bool CanChange() => JumpKingLastJumpValue.Preferences.IsEnabled;
 
         protected override string CurrentOptionName() => ((ELastJumpDisplayType)CurrentOption).ToString();
 
         protected override void OnOptionChange(int option)
         {
-            JumpKingLastJumpValue.DisplayType = (ELastJumpDisplayType)option;
+            JumpKingLastJumpValue.Preferences.DisplayType = (ELastJumpDisplayType)option;
         }
     }
 }

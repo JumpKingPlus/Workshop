@@ -54,15 +54,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ELastJumpDisplayType.cs" />
-    <Compile Include="GameLoopDraw.cs" />
-    <Compile Include="JumpCalculation.cs" />
+    <Compile Include="Models\GameLoopDraw.cs" />
+    <Compile Include="Models\JumpChargeCalc.cs" />
     <Compile Include="JumpKingLastJumpValue.cs" />
     <Compile Include="Menu\LastJumpValueOption.cs" />
     <Compile Include="Menu\ToggleLastJumpValue.cs" />
+    <Compile Include="Models\MenuOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

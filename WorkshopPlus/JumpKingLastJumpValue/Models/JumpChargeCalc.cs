@@ -1,22 +1,32 @@
 ﻿using BehaviorTree;
 using HarmonyLib;
+using JumpKing.GameManager;
 using JumpKing.Player;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JumpKingLastJumpValue
+namespace JumpKingLastJumpValue.Models
 {
-    [HarmonyPatch(typeof(JumpState))]
-    class JumpCalculation
+    class JumpChargeCalc
     {
+        public JumpChargeCalc(Harmony harmony)
+        {
+            harmony.Patch(
+                typeof(JumpState).GetMethod("MyRun"),
+                new HarmonyMethod(typeof(JumpChargeCalc).GetMethod(nameof(JumpChargeCalc.Run)))
+            );
+        }
+
+        public static MethodInfo Method => AccessTools.Method(typeof(JumpState), "MyRun");
+        public static MethodInfo HarmonyMethod => AccessTools.Method(typeof(JumpChargeCalc), nameof(Run));
+
         private static float previous_timer { get; set; }
 
-        [HarmonyPostfix]
-        [HarmonyPatch("MyRun")]
         static void Run(TickData p_data, BTresult __result, JumpState __instance)
         {
             // not charging a jump
@@ -35,23 +45,26 @@ namespace JumpKingLastJumpValue
             }
 
             // calculating percentage
-            JumpKingLastJumpValue.JumpPercentage = m_timer / __instance.CHARGE_TIME * 100f;
+            JumpPercentage = m_timer / __instance.CHARGE_TIME * 100f;
 
             // reset values
             if (__instance.last_result != BTresult.Running)
             {
-                JumpKingLastJumpValue.JumpFrames = -1;
+                JumpFrames = -1;
             }
 
             // calculating frames
-            JumpKingLastJumpValue.JumpFrames++;
+            JumpFrames++;
 
             // save previous value
             previous_timer = m_timer;
 
 #if DEBUG
-            Debug.WriteLine($"JumpFrames: {JumpKingLastJumpValue.JumpFrames} - JumpPercentage: {JumpKingLastJumpValue.JumpPercentage} - Result: {__result} / {__instance.last_result} - Delta: {p_data.delta_time * __instance.body.GetMultipliers()}");
+            Debug.WriteLine($"JumpFrames: {JumpFrames} - JumpPercentage: {JumpPercentage} - Result: {__result} / {__instance.last_result} - Delta: {p_data.delta_time * __instance.body.GetMultipliers()}");
 #endif
         }
+
+        public static int JumpFrames { get; internal set; }
+        public static float JumpPercentage { get; internal set; }
     }
 }

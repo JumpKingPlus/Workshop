@@ -12,23 +12,29 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JumpKingLastJumpValue
+namespace JumpKingLastJumpValue.Models
 {
-    [HarmonyPatch(typeof(GameLoop))]
     class GameLoopDraw
     {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(GameLoop.Draw))]
+        public GameLoopDraw(ref Harmony harmony)
+        {
+            harmony.Patch(
+                typeof(GameLoop).GetMethod(nameof(GameLoop.Draw)),
+                postfix: new HarmonyMethod(typeof(GameLoopDraw).GetMethod(nameof(GameLoopDraw.Draw)))
+            );
+        }
+
         static void Draw(GameLoop __instance)
         {
-            // if not in pause AND if enabled
-            if (JumpKingLastJumpValue.IsEnabled && !Traverse.Create(__instance).Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
+            // if not in pause (!PauseManager.instance.IsPaused) AND if enabled
+            if (JumpKingLastJumpValue.Preferences.IsEnabled &&
+                !Traverse.Create(__instance).Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
             {
-                if (JumpKingLastJumpValue.DisplayType == ELastJumpDisplayType.Percentage)
+                if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
                 {
                     TextHelper.DrawString(
                     Game1.instance.contentManager.font.MenuFont,
-                    $"{JumpKingLastJumpValue.JumpPercentage.ToString("0.00")}%",
+                    $"{JumpChargeCalc.JumpPercentage.ToString("0.00")}%",
                     new Vector2(12f, 26f),
                     //new Vector2(12f, 44f),
                     Color.White, Vector2.Zero, true);
@@ -37,7 +43,7 @@ namespace JumpKingLastJumpValue
 
                 TextHelper.DrawString(
                     Game1.instance.contentManager.font.MenuFont,
-                    $"{JumpKingLastJumpValue.JumpFrames} frames",
+                    $"{JumpChargeCalc.JumpFrames} frames",
                     new Vector2(12f, 26f),
                     Color.White, Vector2.Zero, true);
             }
