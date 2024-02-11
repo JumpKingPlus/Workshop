@@ -12,18 +12,16 @@ using System.Threading.Tasks;
 
 namespace JumpKingLastJumpValue.Models
 {
+    [HarmonyPatch(typeof(JumpState))]
     class JumpChargeCalc
     {
         public JumpChargeCalc(Harmony harmony)
         {
             harmony.Patch(
-                typeof(JumpState).GetMethod("MyRun"),
-                new HarmonyMethod(typeof(JumpChargeCalc).GetMethod(nameof(JumpChargeCalc.Run)))
+                AccessTools.Method(typeof(JumpState), "MyRun"),
+                postfix: new HarmonyMethod(AccessTools.Method(GetType(), nameof(Run)))
             );
         }
-
-        public static MethodInfo Method => AccessTools.Method(typeof(JumpState), "MyRun");
-        public static MethodInfo HarmonyMethod => AccessTools.Method(typeof(JumpChargeCalc), nameof(Run));
 
         private static float previous_timer { get; set; }
 

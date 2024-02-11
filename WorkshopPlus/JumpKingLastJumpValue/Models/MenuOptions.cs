@@ -15,11 +15,11 @@ namespace JumpKingLastJumpValue.Models
 {
     class MenuOptions
     {
-        public MenuOptions(ref Harmony harmony)
+        public MenuOptions(Harmony harmony)
         {
             harmony.Patch(
                 AccessTools.Method("JumpKing.PauseMenu.MenuFactory:CreateIngameOptions"),
-                postfix: new HarmonyMethod(typeof(MenuOptions).GetMethod(nameof(Menu)))
+                postfix: new HarmonyMethod(AccessTools.Method(typeof(MenuOptions), nameof(Menu)))
             );
         }
 
@@ -53,7 +53,7 @@ namespace JumpKingLastJumpValue.Models
         /// <summary>
         /// Patches menu to add additional option(s).
         /// </summary>
-        public static void Menu(GuiFormat p_format, GuiFormat p_sub_format, ref MenuSelector __result, object __instance)
+        static void Menu(GuiFormat p_format, GuiFormat p_sub_format, ref MenuSelector __result, object __instance)
         {
             _drawables = Traverse.Create(__instance).Field("m_drawables");
 

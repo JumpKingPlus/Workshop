@@ -16,11 +16,11 @@ namespace JumpKingLastJumpValue.Models
 {
     class GameLoopDraw
     {
-        public GameLoopDraw(ref Harmony harmony)
+        public GameLoopDraw(Harmony harmony)
         {
             harmony.Patch(
                 typeof(GameLoop).GetMethod(nameof(GameLoop.Draw)),
-                postfix: new HarmonyMethod(typeof(GameLoopDraw).GetMethod(nameof(GameLoopDraw.Draw)))
+                postfix: new HarmonyMethod(AccessTools.Method(typeof(GameLoopDraw), nameof(Draw)))
             );
         }
 

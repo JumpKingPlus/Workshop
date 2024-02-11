@@ -5,27 +5,31 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace JumpKingLastJumpValue
 {
     public class Preferences : INotifyPropertyChanged
     {
+        private bool _isEnabled = true;
+        private ELastJumpDisplayType _displayType = ELastJumpDisplayType.Percentage;
+
         public bool IsEnabled
         {
-            get => Properties.Settings.Default.IsEnabled;
+            get => _isEnabled;
             set
             {
-                Properties.Settings.Default.IsEnabled = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
 
         public ELastJumpDisplayType DisplayType
         {
-            get => Properties.Settings.Default.DisplayType;
+            get => _displayType;
             set
             {
-                Properties.Settings.Default.DisplayType = value;
+                _displayType = value;
                 OnPropertyChanged();
             }
         }
@@ -36,7 +40,6 @@ namespace JumpKingLastJumpValue
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            Properties.Settings.Default.Save();
         }
         #endregion
     }
