@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingInstAchievements", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingLastJumpValue", "JumpKingLastJumpValue\JumpKingLastJumpValue.csproj", "{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingPlayerCoordinates", "JumpKingPlayerCoordinates\JumpKingPlayerCoordinates.csproj", "{DA198657-34DB-465A-954C-70DF0B857309}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{207F5DB1-EBB6-4C87-B427-EDA4560C5E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA198657-34DB-465A-954C-70DF0B857309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA198657-34DB-465A-954C-70DF0B857309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA198657-34DB-465A-954C-70DF0B857309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA198657-34DB-465A-954C-70DF0B857309}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
