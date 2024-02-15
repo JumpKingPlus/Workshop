@@ -101,25 +101,27 @@ namespace JumpKingSaveStates.Models
             menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_INPUT_BIND_SECONDARY, p_child2, menuFontSmall));
             
             BTsequencor btsequencor = new BTsequencor();
-            btsequencor.AddChild(new BindDefault(_entity));
+            btsequencor.AddChild(new CustomBindDefault(_entity));
             btsequencor.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
             menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_INPUT_DEFAULT, btsequencor, menuFontSmall));
             
             BTsequencor btsequencor2 = new BTsequencor();
-            btsequencor2.AddChild(new SaveBind(_entity));
+            btsequencor2.AddChild(new CustomSaveBind(_entity));
             btsequencor2.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
             menuSelector.AddChild<SaveNotifier>(new SaveNotifier(_entity, new TextButton(language.MENUFACTORY_SAVE, btsequencor2, menuFontSmall)));
             
-            BTsequencor btsequencor3 = new BTsequencor();
-            btsequencor3.AddChild(new LoadBind(_entity));
-            btsequencor3.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
-            menuSelector.AddChild<SaveNotifier>(new SaveNotifier(_entity, new TextButton(language.MENUFACTORY_LOAD, btsequencor3, menuFontSmall)));
+            //BTsequencor btsequencor3 = new BTsequencor();
+            //btsequencor3.AddChild(new LoadBind(_entity));
+            //btsequencor3.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
+            //menuSelector.AddChild<SaveNotifier>(new SaveNotifier(_entity, new TextButton(language.MENUFACTORY_LOAD, btsequencor3, menuFontSmall)));
+            
             menuSelector.Initialize(true);
             menuSelector.GetBounds();
 
             // right
             DisplayFrame displayFrame = new DisplayFrame(gui_right, BTresult.Running);
-            //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Up));
+            displayFrame.AddChild<CustomBindDisplay>(new CustomBindDisplay(_entity, EBinding.SavePos));
+            displayFrame.AddChild<CustomBindDisplay>(new CustomBindDisplay(_entity, EBinding.LoadPos));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Down));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Left));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Right));
@@ -145,8 +147,10 @@ namespace JumpKingSaveStates.Models
                 element_margin = 8,
                 all_padding = 16
             };
+
+            // could be improved
             BindCatchSave p_child = new BindCatchSave(entity);
-            BindCatchRevert p_child2 = new BindCatchRevert(entity);
+            CustomBindDefault p_child2 = new CustomBindDefault(entity);
             MenuSelector menuSelector = new MenuSelector(p_format);
             menuSelector.AllowEscape = false;
             MenuSelectorBack p_child3 = new MenuSelectorBack(menuSelector);
@@ -169,8 +173,8 @@ namespace JumpKingSaveStates.Models
             BTsequencor btsequencor2 = new BTsequencor();
             btsequencor2.AddChild(p_child);
             btsequencor2.AddChild(new WaitUntilNoMenuInput());
-            btsequencor2.AddChild(MakeBindButtonMenu("Save Position", p_format, p_order_index, entity));
-            btsequencor2.AddChild(MakeBindButtonMenu("Load Position", p_format, p_order_index, entity));
+            btsequencor2.AddChild(MakeBindButtonMenu(EBinding.SavePos, p_format, p_order_index, entity));
+            btsequencor2.AddChild(MakeBindButtonMenu(EBinding.LoadPos, p_format, p_order_index, entity));
             btsequencor2.AddChild(new WaitUntilNoInput(entity));
             btsequencor2.AddChild(menuSelector);
 
@@ -180,11 +184,12 @@ namespace JumpKingSaveStates.Models
             return btselector;
         }
 
-        private static BindButtonFrame MakeBindButtonMenu(string p_button, GuiFormat p_format, int p_order_index, Entity m_entity)
+        private static BindButtonFrame MakeBindButtonMenu(EBinding p_button, GuiFormat p_format, int p_order_index, Entity m_entity)
         {
             BTsequencor btsequencor = new BTsequencor();
             btsequencor.AddChild(new WaitUntilNoInput(m_entity));
             btsequencor.AddChild(new CustomBindButton(m_entity, p_button, p_order_index));
+            btsequencor.AddChild(new SetBBKeyNode<bool>(m_entity, "BBKEY_UNSAVED_CHANGED", true));
             BindButtonFrame bindButtonFrame = new BindButtonFrame(p_format, btsequencor);
             bindButtonFrame.AddChild<TextButton>(new TextButton(Util.ParseString(language.MENUFACTORY_PRESS_BUTTON, new object[]
             {

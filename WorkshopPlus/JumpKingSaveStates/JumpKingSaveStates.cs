@@ -21,6 +21,7 @@ namespace JumpKingSaveStates
 
         private static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
+        public static CustomPadInstance PadInstance { get; private set; }
 
         [BeforeLevelLoad]
         public static void OnLevelStart()
@@ -52,6 +53,8 @@ namespace JumpKingSaveStates
 
             // patching on each class (is better than attributes)
             new MenuOptions(harmony);
+            new GameLoopRun(harmony);
+            PadInstance = new CustomPadInstance(harmony);
         }
 
         private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
