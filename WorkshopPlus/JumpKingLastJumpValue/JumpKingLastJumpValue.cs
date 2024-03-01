@@ -2,6 +2,8 @@
 using HarmonyLib;
 using JumpKing;
 using JumpKing.Mods;
+using JumpKing.PauseMenu;
+using JumpKing.PauseMenu.BT;
 using JumpKingLastJumpValue.Models;
 using MonoMod.Utils;
 using System;
@@ -56,8 +58,14 @@ namespace JumpKingLastJumpValue
             // patching on each class (is better than attributes)
             new JumpChargeCalc(harmony);
             new GameLoopDraw(harmony);
-            new MenuOptions(harmony);
         }
+
+        [PauseMenuItemSetting]
+        [MainMenuItemSetting]
+        public static TextButton CreateOptions(object factory, GuiFormat format)
+        {
+            return new TextButton("Jump% Options", MenuOptions.CreateJumpOptions(format, factory));
+        } 
 
         private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
         {
