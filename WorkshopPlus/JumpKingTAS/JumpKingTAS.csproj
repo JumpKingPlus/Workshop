@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JumpKingTAS</RootNamespace>
+    <AssemblyName>JumpKingTAS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>embedded</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+	<DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Steamworks.NET">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Jump King\Steamworks.NET.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JumpKing">
+      <Private>False</Private>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Jump King\JumpKing.exe</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Jump King\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="JKAddons\FrameState.cs" />
+    <Compile Include="JKAddons\InputController.cs" />
+    <Compile Include="JKAddons\InputRecord.cs" />
+    <Compile Include="JKAddons\Manager.cs" />
+    <Compile Include="Models\GameLoopDraw.cs" />
+    <Compile Include="Models\GameUpdate.cs" />
+    <Compile Include="Models\PadStateGet.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Studio\Entities\GameMemory.cs" />
+    <Compile Include="Studio\Entities\InputRecord.cs" />
+    <Compile Include="Studio\Entities\MemoryReader.cs" />
+    <Compile Include="Studio\Entities\ProgramPointer.cs" />
+    <Compile Include="Studio\RichText\AutocompleteItem.cs" />
+    <Compile Include="Studio\RichText\AutocompleteMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Studio\RichText\Char.cs" />
+    <Compile Include="Studio\RichText\CommandManager.cs" />
+    <Compile Include="Studio\RichText\Commands.cs" />
+    <Compile Include="Studio\RichText\Export.cs" />
+    <Compile Include="Studio\RichText\FileTextSource.cs" />
+    <Compile Include="Studio\RichText\GoToForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Studio\RichText\GoToForm.Designer.cs">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Studio\RichText\LimitedStack.cs" />
+    <Compile Include="Studio\RichText\Line.cs" />
+    <Compile Include="Studio\RichText\LinesAccessor.cs" />
+    <Compile Include="Studio\RichText\Place.cs" />
+    <Compile Include="Studio\RichText\PlatformType.cs" />
+    <Compile Include="Studio\RichText\Range.cs" />
+    <Compile Include="Studio\RichText\RichText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Studio\RichText\Style.cs" />
+    <Compile Include="Studio\RichText\SyntaxDescriptor.cs" />
+    <Compile Include="Studio\RichText\SyntaxHighlighter.cs" />
+    <Compile Include="Studio\RichText\TextSource.cs" />
+    <Compile Include="Studio\RichText\VisualMarker.cs" />
+    <Compile Include="Studio\Studio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Studio\Studio.Designer.cs">
+      <DependentUpon>Studio.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Studio\RichText\GoToForm.resx">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Studio\RichText\RichText.resx">
+      <DependentUpon>RichText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Studio\Studio.resx">
+      <DependentUpon>Studio.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Studio\JumpKing.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

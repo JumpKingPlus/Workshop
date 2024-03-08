@@ -10,45 +10,47 @@ namespace JumpKingSaveStates
 {
     public class Preferences : INotifyPropertyChanged
     {
-        private float x = 231f;
-        private float y = 302f;
-        private uint screen = 1;
+        [XmlIgnore]
+        const int MAX_QUEUE_SIZE = 4;
+
+        private ConcurrentDropoutQueue<SaveState> saveStates = 
+            new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, SaveState.Default);
+        
         private Dictionary<EBinding, int[]> keyBinds = new Dictionary<EBinding, int[]>()
         {
             { EBinding.SavePos, new int[] { (int)Keys.Insert } },
-            { EBinding.LoadPos, new int[] { (int)Keys.Home } }
+            { EBinding.LoadPos, new int[] { (int)Keys.Home } },
+            { EBinding.DeletePos, new int[] { (int)Keys.Delete } },
         };
 
-        public void SetSaveState(float x, float y, int screen)
+        public bool TryAddSaveState(float x, float y, int screen)
         {
-            PositionX = x;
-            PositionY = y;
+            if (!uint.TryParse(screen.ToString(), out uint uScreen))
+                return false;
 
-            if (uint.TryParse(screen.ToString(), out uint uScreen))
-                Screen = uScreen;
+            var saveState = new SaveState(x, y, uScreen);
+            if (SaveStates.Last().Equals(saveState))
+                return false;
 
+            SaveStates.Enqueue(saveState);
             OnPropertyChanged();
+            return true;
+        }
+
+        public bool DeleteRecentSaveState()
+        {
+            var has_deleted_smth = SaveStates.Count > 1;
+            //SaveStates.ToList().RemoveAt(SaveStates.ToList().Count - 1);
+            if (has_deleted_smth)
+            {
+                var temp_list = SaveStates.ToList();
+                temp_list.RemoveAt(SaveStates.Count - 1);
+                SaveStates = new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, temp_list.ToArray());
+            }
+            return has_deleted_smth;
         }
 
         public void ForceUpdate() => OnPropertyChanged();
-
-        public float PositionX
-        {
-            get => x;
-            set => x = value;
-        }
-
-        public float PositionY
-        {
-            get => y;
-            set => y = value;
-        }
-
-        public uint Screen
-        {
-            get => screen;
-            set => screen = value;
-        }
 
         [XmlIgnore]
         public Dictionary<EBinding, int[]> KeyBindings
@@ -57,6 +59,17 @@ namespace JumpKingSaveStates
             set
             {
                 keyBinds = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [XmlIgnore]
+        public ConcurrentDropoutQueue<SaveState> SaveStates
+        {
+            get => saveStates;
+            set
+            {
+                saveStates = value;
                 OnPropertyChanged();
             }
         }
@@ -76,6 +89,15 @@ namespace JumpKingSaveStates
             set => keyBinds = value.ToDictionary(x => x.Bind, x => x.Keys);
         }
 
+        public SaveState[] Saves
+        {
+            get => saveStates.ToArray();
+            set
+            {
+                saveStates = new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, value);
+            }
+        }
+
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,6 +106,22 @@ namespace JumpKingSaveStates
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+    }
+
+    public struct SaveState
+    {
+        public SaveState(float x, float y, uint screen)
+        {
+            X = x;
+            Y = y;
+            Screen = screen;
+        }
+
+        public float X;
+        public float Y;
+        public uint Screen;
+
+        public static SaveState Default => new SaveState(231, 302, 1);
     }
 
     public struct Binding

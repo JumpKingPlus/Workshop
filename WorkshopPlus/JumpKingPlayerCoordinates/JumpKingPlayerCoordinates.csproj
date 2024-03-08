@@ -58,7 +58,6 @@
     <Compile Include="Menu\PlayerCoordinatesOption.cs" />
     <Compile Include="Menu\TogglePlayerCoordinates.cs" />
     <Compile Include="Models\GameLoopDraw.cs" />
-    <Compile Include="Models\MenuOptions.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

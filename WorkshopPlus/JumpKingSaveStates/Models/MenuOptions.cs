@@ -21,19 +21,14 @@ using JumpKing.Util;
 using JumpKingSaveStates.Menu;
 using JumpKing.PauseMenu.BT.Actions;
 using Microsoft.Xna.Framework;
+using JumpKing.SaveThread;
+using JumpKing.GameManager;
+using JumpKingSaveStates.Nodes;
 
 namespace JumpKingSaveStates.Models
 {
     class MenuOptions
     {
-        public MenuOptions(Harmony harmony)
-        {
-            harmony.Patch(
-                AccessTools.Method("JumpKing.PauseMenu.MenuFactory:CreateIngameOptions"),
-                postfix: new HarmonyMethod(AccessTools.Method(typeof(MenuOptions), nameof(Menu)))
-            );
-        }
-
         private static Traverse _drawables;
         public static List<IDrawable> MenuFactoryDrawables
         {
@@ -60,26 +55,73 @@ namespace JumpKingSaveStates.Models
             fieldReference.SetValue(children.ToArray());
         }
 
-        /// <summary>
-        /// Patches menu to add additional option(s).
-        /// </summary>
-        static void Menu(GuiFormat p_format, GuiFormat p_sub_format, ref MenuSelector __result, object __instance)
+        internal static MenuSelector CreateTeleportList(GuiFormat p_format)
         {
-            _drawables = Traverse.Create(__instance).Field("m_drawables");
+            MenuSelector menuSelector = new MenuSelector(p_format);
 
-            // remove return button
-            if (__result.Children[__result.Children.Length - 1].GetType() == typeof(IconButton))
+            if (Game1.instance.contentManager.root == "Content")
             {
-                RemoveLastChild(ref __result);
+                if (EventFlagsSave.ContainsFlag(StoryEventFlags.StartedGhost))
+                {
+                    menuSelector.AddChild(new TextButton(language.LOCATION_PHILOSOPHERS_FOREST, new TeleportToLocationNode(16, -55714)));
+                    menuSelector.AddChild(new TextButton("The Hole", new TeleportToLocationNode(32, -58434)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BOG, new TeleportToLocationNode(79, -36074)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_MOULDING_MANOR, new TeleportToLocationNode(183, -38602)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BUGSTALK, new TeleportToLocationNode(163, -41442)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_HOUSE_OF_NINE_LIVES, new TeleportToLocationNode(329, -43970)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_THE_PHANTOM_TOWER, new TeleportToLocationNode(333, -46530)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_HALTED_RUIN, new TeleportToLocationNode(204, -49794)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_THE_TOWER_OF_ANTUMBRA, new TeleportToLocationNode(292, -52626)));
+                    menuSelector.AddChild(new TextButton("Ghost of the Babe's Screen", new TeleportToLocationNode(302, -54770)));
+                }
+                else if (EventFlagsSave.ContainsFlag(StoryEventFlags.StartedNBP))
+                {
+                    menuSelector.AddChild(new TextButton("Room of the Imp", new TeleportToLocationNode(171, -15570)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BRIGHTCROWN_WOODS, new TeleportToLocationNode(377, -16274)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_COLOSSAL_DUNGEON, new TeleportToLocationNode(295, -18426)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_FALSE_KINGS_CASTLE, new TeleportToLocationNode(105, -20922)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_UNDERBURG, new TeleportToLocationNode(415, -22362)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_LOST_FRONTIER, new TeleportToLocationNode(242, -24898)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_HIDDEN_KINGDOM, new TeleportToLocationNode(360, -27402)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BLACK_SANCTUM, new TeleportToLocationNode(210, -29578)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_DEEP_RUIN, new TeleportToLocationNode(170, -31786)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_THE_DARK_TOWER, new TeleportToLocationNode(288, -33554)));
+                    menuSelector.AddChild(new TextButton("New Babe Plus' Screen", new TeleportToLocationNode(140, -35314)));
+                }
+                else
+                {
+                    menuSelector.AddChild(new TextButton(language.LOCATION_REDCROWN_WOODS, new TeleportToLocationNode(231, 302)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_COLOSSAL_DRAIN, new TeleportToLocationNode(251, -1498)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_FALSE_KINGS_KEEP, new TeleportToLocationNode(340, -3282)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BARGAINBURG, new TeleportToLocationNode(150, -4738)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_GREAT_FRONTIER, new TeleportToLocationNode(222, -6594)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_WINDSWEPT_BLUFF, new TeleportToLocationNode(216, -8714)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_STORMWALL_PASS, new TeleportToLocationNode(223, -9074)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_CHAPEL_PERILOUS, new TeleportToLocationNode(426, -11202)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_BLUE_RUIN, new TeleportToLocationNode(410, -12658)));
+                    menuSelector.AddChild(new TextButton(language.LOCATION_THE_TOWER, new TeleportToLocationNode(435, -13722)));
+                    menuSelector.AddChild(new TextButton("Main Babe's Screen", new TeleportToLocationNode(150, -14802)));
+                }
+            }
+            else
+            {
+                menuSelector.AddChild(new DoubleTextInfoButton(
+                    new TextInfo("Work in progress!", Color.Gray),
+                    new TextInfo("Custom teleports available in the future", Color.Gray, Game1.instance.contentManager.font.LocationFont),
+                    new StaticNodeSimple(BTresult.Failure)
+                ));
             }
 
-            __result.AddChild(new TextButton("Savestates Bind Options", CreateSaveStatesBindControls(__instance)));
-            __result.Initialize(true);
+            //MenuFactoryDrawables.Add(menuSelector);
+            menuSelector.Initialize(true);
+            return menuSelector;
         }
 
-        private static BTsimultaneous CreateSaveStatesBindControls(object __instance)
+        internal static BTsimultaneous CreateSaveStatesBindControls(object __instance)
         {
             var _this = Traverse.Create(__instance);
+            _drawables = _this.Field("m_drawables");
+
             var _entity = _this.Field("m_entity").GetValue<Entity>();
             var gui_left = _this.Field("CONTROLS_GUI_FORMAT_LEFT").GetValue<GuiFormat>();
             var gui_right = _this.Field("CONTROLS_GUI_FORMAT_RIGHT").GetValue<GuiFormat>();
@@ -122,6 +164,7 @@ namespace JumpKingSaveStates.Models
             DisplayFrame displayFrame = new DisplayFrame(gui_right, BTresult.Running);
             displayFrame.AddChild<CustomBindDisplay>(new CustomBindDisplay(_entity, EBinding.SavePos));
             displayFrame.AddChild<CustomBindDisplay>(new CustomBindDisplay(_entity, EBinding.LoadPos));
+            displayFrame.AddChild<CustomBindDisplay>(new CustomBindDisplay(_entity, EBinding.DeletePos));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Down));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Left));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Right));
@@ -166,15 +209,16 @@ namespace JumpKingSaveStates.Models
             menuSelector.SetNodeForceRun(timerAction);
             menuSelector.Initialize(false);
 
-            var drawables = MenuFactoryDrawables;
-            drawables.Add(menuSelector);
-            MenuFactoryDrawables = drawables;
+            //var drawables = MenuFactoryDrawables;
+            //drawables.Add(menuSelector);
+            //MenuFactoryDrawables = drawables;
 
             BTsequencor btsequencor2 = new BTsequencor();
             btsequencor2.AddChild(p_child);
             btsequencor2.AddChild(new WaitUntilNoMenuInput());
             btsequencor2.AddChild(MakeBindButtonMenu(EBinding.SavePos, p_format, p_order_index, entity));
             btsequencor2.AddChild(MakeBindButtonMenu(EBinding.LoadPos, p_format, p_order_index, entity));
+            btsequencor2.AddChild(MakeBindButtonMenu(EBinding.DeletePos, p_format, p_order_index, entity));
             btsequencor2.AddChild(new WaitUntilNoInput(entity));
             btsequencor2.AddChild(menuSelector);
 
@@ -197,9 +241,9 @@ namespace JumpKingSaveStates.Models
             }), btsequencor));
             bindButtonFrame.Initialize();
 
-            var draw = MenuFactoryDrawables;
-            draw.Add(bindButtonFrame);
-            MenuFactoryDrawables = draw;
+            //var draw = MenuFactoryDrawables;
+            //draw.Add(bindButtonFrame);
+            //MenuFactoryDrawables = draw;
 
             return bindButtonFrame;
         }

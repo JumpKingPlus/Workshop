@@ -26,19 +26,29 @@ namespace JumpKingSaveStates.Models
             if (!traverse_instance.Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
             {
                 CustomPadState state = JumpKingSaveStates.PadInstance.GetPressed();
+                if (state.deletePos)
+                {
+                    if (JumpKingSaveStates.Preferences.DeleteRecentSaveState())
+                    {
+                        JumpKingSaveStates.DeleteSave.Play();
+                    }
+                }
                 if (state.savePos)
                 {
-                    JumpKingSaveStates.Preferences.SetSaveState(
+                    if (JumpKingSaveStates.Preferences.TryAddSaveState(
                         GameLoop.m_player.m_body.Position.X,
                         GameLoop.m_player.m_body.Position.Y,
-                        GameLoop.m_player.m_body.LastScreen
-                    );
-                    Game1.instance.contentManager.audio.menu.MenuFail.Play();
+                        GameLoop.m_player.m_body.LastScreen + 1
+                    ))
+                    {
+                        Game1.instance.contentManager.audio.menu.MenuFail.Play();
+                    }
                 }
                 if (state.loadPos)
                 {
-                    GameLoop.m_player.m_body.Position.X = JumpKingSaveStates.Preferences.PositionX;
-                    GameLoop.m_player.m_body.Position.Y = JumpKingSaveStates.Preferences.PositionY;
+                    SaveState saveState = JumpKingSaveStates.Preferences.SaveStates.Last();
+                    GameLoop.m_player.m_body.Position.X = saveState.X;
+                    GameLoop.m_player.m_body.Position.Y = saveState.Y;
                     GameLoop.m_player.m_body.Velocity = Vector2.Zero;
                     Camera.UpdateCamera(GameLoop.m_player.m_body.GetHitbox().Center);
                     Game1.instance.contentManager.audio.menu.Select.Play();

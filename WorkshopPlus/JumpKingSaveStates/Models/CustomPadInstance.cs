@@ -56,7 +56,8 @@ namespace JumpKingSaveStates.Models
             return new CustomPadState
             {
                 savePos = (!last_state.savePos && current_state.savePos),
-                loadPos = (!last_state.loadPos && current_state.loadPos)
+                loadPos = (!last_state.loadPos && current_state.loadPos),
+                deletePos = (!last_state.deletePos && current_state.deletePos)
             };
         }
 
@@ -67,6 +68,7 @@ namespace JumpKingSaveStates.Models
             {
                 savePos = IsPressed(pressedButtons, JumpKingSaveStates.Preferences.KeyBindings[EBinding.SavePos]),
                 loadPos = IsPressed(pressedButtons, JumpKingSaveStates.Preferences.KeyBindings[EBinding.LoadPos]),
+                deletePos = IsPressed(pressedButtons, JumpKingSaveStates.Preferences.KeyBindings[EBinding.DeletePos])
             };
         }
 
@@ -90,5 +92,6 @@ namespace JumpKingSaveStates.Models
     {
         public bool savePos;
         public bool loadPos;
+        public bool deletePos;
     }
 }

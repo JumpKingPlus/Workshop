@@ -9,6 +9,7 @@ namespace JumpKingSaveStates
     public enum EBinding
     {
         SavePos,
-        LoadPos
+        LoadPos,
+        DeletePos
     }
 }

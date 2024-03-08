@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrentDropoutQueue.cs" />
     <Compile Include="EBinding.cs" />
     <Compile Include="JumpKingSaveStates.cs" />
     <Compile Include="Menu\CustomBindButton.cs" />
@@ -69,6 +70,16 @@
     <Compile Include="Models\MenuOptions.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Nodes\TeleportToLocationNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\delete_savestate.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Content.mgcb" />
+    <Content Include="Content\delete_savestate.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

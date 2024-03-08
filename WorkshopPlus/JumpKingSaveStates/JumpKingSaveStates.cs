@@ -1,6 +1,12 @@
 ﻿using HarmonyLib;
+using JumpKing;
+using JumpKing.API;
 using JumpKing.Mods;
+using JumpKing.PauseMenu.BT;
+using JumpKing.XnaWrappers;
 using JumpKingSaveStates.Models;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using JumpKing.PauseMenu;
 
 namespace JumpKingSaveStates
 {
@@ -23,6 +30,23 @@ namespace JumpKingSaveStates
         public static Preferences Preferences { get; private set; }
         public static CustomPadInstance PadInstance { get; private set; }
 
+        internal static JKSound DeleteSave { get; private set; }
+
+        #region Menu Items
+        [PauseMenuItemSetting]
+        [MainMenuItemSetting]
+        public static TextButton BindSettings(object factory, GuiFormat format)
+        {
+            return new TextButton("Bind Keys", MenuOptions.CreateSaveStatesBindControls(factory));
+        }
+
+        [PauseMenuItemSetting]
+        public static TextButton TeleportMenu(object factory, GuiFormat format)
+        {
+            return new TextButton("Teleport to...", MenuOptions.CreateTeleportList(format));
+        }
+        #endregion
+
         [BeforeLevelLoad]
         public static void OnLevelStart()
         {
@@ -34,10 +58,20 @@ namespace JumpKingSaveStates
             // set path for dll
             AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+            // load savestate delete sfx
+            DeleteSave = new JKSound(
+                Game1.instance.contentManager.Load<SoundEffect>($@"{AssemblyPath}\Content\delete_savestate"), 
+                SoundType.SFX);
+
             // try reading config file
             try
             {
-                Preferences = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
+                var prefs = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
+                if (prefs.KeyBindings.Count != Enum.GetNames(typeof(EBinding)).Length)
+                {
+                    throw new Exception("Missing keybindings!");
+                }
+                Preferences = prefs;
             }
             catch (Exception e)
             {
@@ -52,7 +86,6 @@ namespace JumpKingSaveStates
             var harmony = new Harmony(HARMONY_IDENTIFIER);
 
             // patching on each class (is better than attributes)
-            new MenuOptions(harmony);
             new GameLoopRun(harmony);
             PadInstance = new CustomPadInstance(harmony);
         }

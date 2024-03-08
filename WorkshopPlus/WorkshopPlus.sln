@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingLevelPercentage", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingManager", "JumpKingManager\JumpKingManager.csproj", "{896E5435-5E98-40D3-9D7D-F0873AE4D509}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingTAS", "JumpKingTAS\JumpKingTAS.csproj", "{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilGameLoopOrganizer", "UtilGameLoopOrganizer\UtilGameLoopOrganizer.csproj", "{3FEF81C8-2734-4949-B16F-7B16DB7D6E2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{896E5435-5E98-40D3-9D7D-F0873AE4D509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{896E5435-5E98-40D3-9D7D-F0873AE4D509}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{896E5435-5E98-40D3-9D7D-F0873AE4D509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1F3FB4-83DD-47DC-ADA0-A00C6445E41A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FEF81C8-2734-4949-B16F-7B16DB7D6E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FEF81C8-2734-4949-B16F-7B16DB7D6E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FEF81C8-2734-4949-B16F-7B16DB7D6E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FEF81C8-2734-4949-B16F-7B16DB7D6E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

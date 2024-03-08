@@ -4,6 +4,7 @@ using JumpKing;
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
 using JumpKing.PauseMenu.BT;
+using JumpKingLastJumpValue.Menu;
 using JumpKingLastJumpValue.Models;
 using MonoMod.Utils;
 using System;
@@ -60,12 +61,21 @@ namespace JumpKingLastJumpValue
             new GameLoopDraw(harmony);
         }
 
+        #region Menu Items
         [PauseMenuItemSetting]
         [MainMenuItemSetting]
-        public static TextButton CreateOptions(object factory, GuiFormat format)
+        public static ToggleLastJumpValue Toggle(object factory, GuiFormat format)
         {
-            return new TextButton("Jump% Options", MenuOptions.CreateJumpOptions(format, factory));
-        } 
+            return new ToggleLastJumpValue();
+        }
+
+        [PauseMenuItemSetting]
+        [MainMenuItemSetting]
+        public static LastJumpValueOption Option(object factory, GuiFormat format)
+        {
+            return new LastJumpValueOption();
+        }
+        #endregion
 
         private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
         {

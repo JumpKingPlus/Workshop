@@ -34,7 +34,7 @@ namespace JumpKingLastJumpValue.Models
                 {
                     TextHelper.DrawString(
                     Game1.instance.contentManager.font.MenuFont,
-                    $"{JumpChargeCalc.JumpPercentage.ToString("0.00")}%",
+                    $"Last Jump: {JumpChargeCalc.JumpPercentage.ToString("0.00")}%",
                     new Vector2(12f, 26f),
                     //new Vector2(12f, 44f),
                     Color.White, Vector2.Zero, true);

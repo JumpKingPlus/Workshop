@@ -1,11 +1,14 @@
-﻿using HarmonyLib;
+﻿using BehaviorTree;
+using HarmonyLib;
+using JumpKing;
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
 using JumpKing.PauseMenu.BT;
-using JumpKingPlayerCoordinates.Menu;
-using JumpKingPlayerCoordinates.Models;
+using JumpKingLevelPercentage.Menu;
+using JumpKingLevelPercentage.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,20 +16,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JumpKingPlayerCoordinates
+namespace JumpKingLevelPercentage
 {
     [JumpKingMod(IDENTIFIER)]
-    public class JumpKingPlayerCoordinates
+    public static class JumpKingLevelPercentage
     {
-        const string IDENTIFIER = "Phoenixx19.PlayerCoordinates";
-        const string HARMONY_IDENTIFIER = "Phoenixx19.PlayerCoordinates.Harmony";
-        const string SETTINGS_FILE = "Phoenixx19.PlayerCoordinates.Settings.xml";
+        const string IDENTIFIER = "Phoenixx19.LevelPercentage";
+        const string HARMONY_IDENTIFIER = "Phoenixx19.LevelPercentage.Harmony";
+        const string SETTINGS_FILE = "Phoenixx19.LevelPercentage.Settings.xml";
 
         private static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
 
         [BeforeLevelLoad]
-        public static void OnLevelStart()
+        public static void BeforeLevelLoad()
         {
 #if DEBUG
             Debugger.Launch();
@@ -60,20 +63,20 @@ namespace JumpKingPlayerCoordinates
         #region Menu Items
         [PauseMenuItemSetting]
         [MainMenuItemSetting]
-        public static TogglePlayerCoordinates Toggle(object factory, GuiFormat format)
+        public static ToggleLevelProgress Toggle(object factory, GuiFormat format)
         {
-            return new TogglePlayerCoordinates();
+            return new ToggleLevelProgress();
         }
 
         [PauseMenuItemSetting]
         [MainMenuItemSetting]
-        public static PlayerCoordinatesOption Option(object factory, GuiFormat format)
+        public static LevelProgressOption Option(object factory, GuiFormat format)
         {
-            return new PlayerCoordinatesOption();
+            return new LevelProgressOption();
         }
         #endregion
-
-        private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
+        
+        private static void SaveSettingsOnFile(object sender, PropertyChangedEventArgs args)
         {
             try
             {

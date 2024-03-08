@@ -1,0 +1,21 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:..\Content
+/intermediateDir:obj
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin delete_savestate.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:delete_savestate.wav
+
