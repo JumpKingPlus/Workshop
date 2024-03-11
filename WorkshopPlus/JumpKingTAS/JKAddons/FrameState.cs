@@ -4,6 +4,8 @@ using JumpKing.MiscSystems.Achievements;
 using JumpKing.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace JumpKingTAS
 {
@@ -23,6 +25,9 @@ namespace JumpKingTAS
 		public bool OnSnow;
 		public bool WindEnabled;
 		public bool OnSand;
+		public static FieldInfo AchievemementManager = 
+			AccessTools.Field("JumpKing.MiscSystems.Achievements.AchievementManager:instance");
+
 		public FrameState(PlayerEntity player) {
 			SetValues(player);
 		}
@@ -44,6 +49,14 @@ namespace JumpKingTAS
 				Direction = tPlayer.Field("m_flip").GetValue<SpriteEffects>();
 				TimeStamp = tPlayer.Field("m_time_stamp").GetValue<int>();
 				JumpTime = tPlayer.Field("m_jump_state").Field("m_timer").GetValue<float>();
+
+				if (AchievemementManager.GetValue(null) != null)
+				{
+					Time = Traverse.Create(AchievemementManager.GetValue(null))
+                        .Field("m_all_time_stats")
+						.Field("_ticks")
+						.GetValue<int>();
+                }
 			}
 		}
 		public void UpdateBody(PlayerEntity player) {
@@ -66,6 +79,13 @@ namespace JumpKingTAS
 			tPlayer.Field("m_flip").SetValue(Direction);
 			tPlayer.Field("m_time_stamp").SetValue(TimeStamp);
 			tPlayer.Field("m_jump_state").Field("m_timer").SetValue(JumpTime);
-		}
+
+            var tAchievements = Traverse.Create(AchievemementManager.GetValue(null));
+
+			// traverse cant properly set values (maybe related to structs?)
+			var stats = tAchievements.Field("m_all_time_stats").GetValue<PlayerStats>();
+			stats._ticks = Time;
+			tAchievements.Field("m_all_time_stats").SetValue(stats);
+        }
 	}
 }

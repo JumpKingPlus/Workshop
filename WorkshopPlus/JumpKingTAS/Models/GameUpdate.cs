@@ -33,7 +33,7 @@ namespace JumpKingTAS.Models
         [MethodImpl(MethodImplOptions.NoInlining)]
         static void DummyUpdate(Game instance, GameTime gameTime)
         {
-            Debug.WriteLine("");
+
         }
 
         private static Traverse Game1instance { get; set; }

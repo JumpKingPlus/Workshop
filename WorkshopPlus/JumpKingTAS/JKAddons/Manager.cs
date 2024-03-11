@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JumpKing.SaveThread;
 using HarmonyLib;
+using JumpKing.MiscSystems.Achievements;
 
 namespace JumpKingTAS
 {
@@ -111,20 +112,29 @@ namespace JumpKingTAS
 
                     if (controller.Current != null)
                     {
-                        //if (controller.Current.HasActions(Actions.Reset))
-                        //{
-                        //    AchievementManager.instance.m_all_time_stats.attempts = 1;
-                        //    AchievementManager.instance.m_all_time_stats.falls = 0;
-                        //    AchievementManager.instance.m_all_time_stats.jumps = 0;
-                        //    AchievementManager.instance.m_all_time_stats.session = 0;
-                        //    AchievementManager.instance.m_all_time_stats._ticks = 0;
-                        //    AchievementManager.instance.m_snapshot.attempts = 1;
-                        //    AchievementManager.instance.m_snapshot.falls = 0;
-                        //    AchievementManager.instance.m_snapshot.jumps = 0;
-                        //    AchievementManager.instance.m_snapshot.session = 0;
-                        //    AchievementManager.instance.m_snapshot._ticks = 2;
-                        //}
-                        //else
+                        var AchievementManager = Traverse.Create(
+                            AccessTools.Field("JumpKing.MiscSystems.Achievements.AchievementManager:instance")
+                            .GetValue(null));
+
+                        if (controller.Current.HasActions(Actions.Reset))
+                        {
+                            var m_all_time_stats = AchievementManager.Field("m_all_time_stats").GetValue<PlayerStats>();
+                            m_all_time_stats.attempts = 1;
+                            m_all_time_stats.falls = 0;
+                            m_all_time_stats.jumps = 0;
+                            m_all_time_stats.session = 0;
+                            m_all_time_stats._ticks = 0;
+                            AchievementManager.Field("m_all_time_stats").SetValue(m_all_time_stats);
+
+                            var m_snapshot = AchievementManager.Field("m_snapshot").GetValue<PlayerStats>();
+                            m_snapshot.attempts = 1;
+                            m_snapshot.falls = 0;
+                            m_snapshot.jumps = 0;
+                            m_snapshot.session = 0;
+                            m_snapshot._ticks = 2;
+                            AchievementManager.Field("m_snapshot").SetValue(m_snapshot);
+                        }
+                        else
                         if (controller.Current.HasActions(Actions.State) && GameLoop.m_player != null)
                         {
                             GameLoop.m_player.ApplySaveState(new SaveState()

@@ -48,7 +48,7 @@ namespace JumpKingSaveStates
         #endregion
 
         [BeforeLevelLoad]
-        public static void OnLevelStart()
+        public static void BeforeLevelLoad()
         {
 #if DEBUG
             Debugger.Launch();
@@ -57,11 +57,6 @@ namespace JumpKingSaveStates
 
             // set path for dll
             AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            // load savestate delete sfx
-            DeleteSave = new JKSound(
-                Game1.instance.contentManager.Load<SoundEffect>($@"{AssemblyPath}\Content\delete_savestate"), 
-                SoundType.SFX);
 
             // try reading config file
             try
@@ -100,6 +95,15 @@ namespace JumpKingSaveStates
             {
                 Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
             }
+        }
+
+        [OnLevelStart]
+        public static void OnLevelStart()
+        {
+            // load savestate delete sfx
+            DeleteSave = new JKSound(
+                Game1.instance.contentManager.Load<SoundEffect>($@"{AssemblyPath}\Content\delete_savestate"),
+                SoundType.SFX);
         }
     }
 }

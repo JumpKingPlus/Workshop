@@ -5,16 +5,43 @@ using System.Text;
 
 namespace UtilGameLoopOrganizer
 {
-    [JumpKingMod("Phoenixx19.UtilGameLoopOrganizer")]
+    [JumpKingMod(IDENTIFIER)]
     public static class ModEntry
     {
+        const string IDENTIFIER = "Phoenixx19.Util.GameLoopOrganizer";
+        const string HARMONY_IDENTIFIER = "Phoenixx19.Util.GameLoopOrganizer.Harmony";
+        const string SETTINGS_FILE = "Phoenixx19.Util.GameLoopOrganizer.Settings.xml";
+
         /// <summary>
         /// Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
         public static void BeforeLevelLoad()
         {
-            // Your code here
+#if DEBUG
+            Debugger.Launch();
+            Harmony.DEBUG = true;
+#endif
+
+            // set path for dll
+            AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // try reading config file
+            try
+            {
+                Preferences = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
+                Preferences = new Preferences();
+            }
+
+            // add save on property changed
+            Preferences.PropertyChanged += SaveSettingsOnFile;
+
+            // setup harmony
+            var harmony = new Harmony(HARMONY_IDENTIFIER);
         }
 
         /// <summary>

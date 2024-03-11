@@ -33,6 +33,58 @@ namespace JumpKingManager
                     cboSpecificLevel.Items.Add(type);
                 }
             }
+            keyThread = new Thread(CheckKeys);
+            keyThread.IsBackground = true;
+            keyThread.Start();
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern short GetAsyncKeyState(Keys vkey);
+        private static bool IsKeyDown(Keys key)
+        {
+            return (GetAsyncKeyState(key) >> 15 & 1) == 1;
+        }
+
+        private void CheckKeys()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (IsKeyDown(Keys.ControlKey) && IsKeyDown(Keys.S))
+                    {
+                        if (!stillHolding)
+                        {
+                            btnSave_Click(null, null);
+                            stillHolding = true;
+                        }
+                    }
+                    else if (IsKeyDown(Keys.ControlKey) && IsKeyDown(Keys.G))
+                    {
+                        if (!stillHolding)
+                        {
+                            btnLoadPosition_Click(null, null);
+                            stillHolding = true;
+                        }
+                    }
+                    else if (IsKeyDown(Keys.ControlKey) && IsKeyDown(Keys.X))
+                    {
+                        if (!stillHolding)
+                        {
+                            btnSpecificLevel_Click(null, null);
+                            stillHolding = true;
+                        }
+                    }
+                    else
+                    {
+                        stillHolding = false;
+                    }
+                }
+                catch
+                {
+                }
+                Thread.Sleep(16);
+            }
         }
 
         private void TeleportToLevel(Screen screen)
