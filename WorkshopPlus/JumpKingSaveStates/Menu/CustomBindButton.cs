@@ -19,7 +19,6 @@ namespace JumpKingSaveStates.Menu
     {
         private EBinding m_button;
         private int m_order_index;
-        private object m_pad;
 
         public CustomBindButton(Entity p_entity, EBinding p_button, int p_order_index) : base(p_entity)
         {
@@ -27,38 +26,16 @@ namespace JumpKingSaveStates.Menu
             m_order_index = p_order_index;
         }
 
-        protected override void OnNewRun()
-        {
-            // GetComponent
-            MethodInfo m1 = typeof(EntityBTNode).GetMethod(nameof(EntityBTNode.GetComponent));
-
-            // <BlackBoardComp>
-            MethodInfo generic = m1.MakeGenericMethod(AccessTools.TypeByName("EntityComponent.BlackBoardComp"));
-            var x = generic.Invoke(this, null);
-
-            // .Get
-            MethodInfo m2 = AccessTools.Method("EntityComponent.BlackBoardComp:Get");
-
-            // <PadInstance>
-            MethodInfo generic2 = m2.MakeGenericMethod(AccessTools.TypeByName("JumpKing.Controller.PadInstance"));
-
-            // ("BBKEY_PAD");
-            m_pad = generic2.Invoke(x, new object[] { "BBKEY_PAD" });
-        }
-
         protected override BTresult MyRun(TickData p_data)
         {
-            var m_traverse_pad = Traverse.Create(m_pad);
+            var m_pad = ControllerManager.instance.GetMain();
 
-            var is_valid = m_traverse_pad.Property("IsValid").GetValue<bool>();
-            var is_connected = m_traverse_pad.Property("IsConnected").GetValue<bool>();
-
-            if (!is_valid || !is_connected)
+            if (!m_pad.IsValid || !m_pad.IsConnected)
             {
                 return BTresult.Failure;
             }
 
-            var pressedButtons = m_traverse_pad.Method("GetPad").Method("GetPressedButtons").GetValue<int[]>();
+            var pressedButtons = m_pad.GetPad().GetPressedButtons();
             if (pressedButtons.Length != 0)
             {
                 var binds = JumpKingSaveStates.Preferences.KeyBindings[m_button];

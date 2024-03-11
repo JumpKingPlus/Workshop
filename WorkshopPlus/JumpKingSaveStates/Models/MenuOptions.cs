@@ -173,8 +173,10 @@ namespace JumpKingSaveStates.Models
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Cancel));
             //displayFrame.AddChild<DisplayBinding>(new DisplayBinding(_entity, JKpadButtons.Pause));
             displayFrame.Initialize();
-            MenuFactoryDrawables.Insert(count, displayFrame);
-            
+
+            var drawables = MenuFactoryDrawables;
+            drawables.Insert(count, displayFrame);
+            MenuFactoryDrawables = drawables;
             
             btsimultaneous.AddChild(new StaticNode(displayFrame, BTresult.Failure));
             return btsimultaneous;
@@ -209,9 +211,9 @@ namespace JumpKingSaveStates.Models
             menuSelector.SetNodeForceRun(timerAction);
             menuSelector.Initialize(false);
 
-            //var drawables = MenuFactoryDrawables;
-            //drawables.Add(menuSelector);
-            //MenuFactoryDrawables = drawables;
+            var drawables = MenuFactoryDrawables;
+            drawables.Add(menuSelector);
+            MenuFactoryDrawables = drawables;
 
             BTsequencor btsequencor2 = new BTsequencor();
             btsequencor2.AddChild(p_child);
@@ -241,9 +243,9 @@ namespace JumpKingSaveStates.Models
             }), btsequencor));
             bindButtonFrame.Initialize();
 
-            //var draw = MenuFactoryDrawables;
-            //draw.Add(bindButtonFrame);
-            //MenuFactoryDrawables = draw;
+            var draw = MenuFactoryDrawables;
+            draw.Add(bindButtonFrame);
+            MenuFactoryDrawables = draw;
 
             return bindButtonFrame;
         }

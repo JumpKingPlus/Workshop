@@ -36,7 +36,9 @@ namespace JumpKingSaveStates.Models
                 this.last_state = this.current_state;
                 this.current_state = this.GetPadState();
 #if DEBUG
-                Debug.WriteLine($"{EBinding.SavePos}: {current_state.savePos} - {EBinding.LoadPos}: {current_state.loadPos}");
+                Debug.WriteLine($"{EBinding.SavePos}: {current_state.savePos} " +
+                    $"- {EBinding.LoadPos}: {current_state.loadPos} " +
+                    $"- {EBinding.DeletePos}: {current_state.deletePos}");
 #endif
             }
         }

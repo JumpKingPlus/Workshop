@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using JumpKing.Controller;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace JumpKingSaveStates
 
         private ConcurrentDropoutQueue<SaveState> saveStates = 
             new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, SaveState.Default);
-        
+
         private Dictionary<EBinding, int[]> keyBinds = new Dictionary<EBinding, int[]>()
         {
             { EBinding.SavePos, new int[] { (int)Keys.Insert } },
@@ -29,8 +30,11 @@ namespace JumpKingSaveStates
                 return false;
 
             var saveState = new SaveState(x, y, uScreen);
-            if (SaveStates.Last().Equals(saveState))
-                return false;
+            if (!SaveStates.IsEmpty)
+            {
+                if (SaveStates.Last().Equals(saveState))
+                    return false;
+            }
 
             SaveStates.Enqueue(saveState);
             OnPropertyChanged();
@@ -39,7 +43,7 @@ namespace JumpKingSaveStates
 
         public bool DeleteRecentSaveState()
         {
-            var has_deleted_smth = SaveStates.Count > 1;
+            var has_deleted_smth = SaveStates.Count >= 1;
             //SaveStates.ToList().RemoveAt(SaveStates.ToList().Count - 1);
             if (has_deleted_smth)
             {
@@ -126,10 +130,11 @@ namespace JumpKingSaveStates
 
     public struct Binding
     {
-        public Binding(KeyValuePair<EBinding, int[]> kvp)
+        public Binding(KeyValuePair<EBinding, int[]> kvp) : this(kvp.Key, kvp.Value) { }
+        public Binding(EBinding keyName, int[] actualKeys)
         {
-            Bind = kvp.Key;
-            Keys = kvp.Value;
+            Bind = keyName;
+            Keys = actualKeys;
         }
 
         public EBinding Bind;

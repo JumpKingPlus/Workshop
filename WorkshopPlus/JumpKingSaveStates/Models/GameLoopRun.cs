@@ -44,7 +44,7 @@ namespace JumpKingSaveStates.Models
                         Game1.instance.contentManager.audio.menu.MenuFail.Play();
                     }
                 }
-                if (state.loadPos)
+                if (state.loadPos && !JumpKingSaveStates.Preferences.SaveStates.IsEmpty)
                 {
                     SaveState saveState = JumpKingSaveStates.Preferences.SaveStates.Last();
                     GameLoop.m_player.m_body.Position.X = saveState.X;

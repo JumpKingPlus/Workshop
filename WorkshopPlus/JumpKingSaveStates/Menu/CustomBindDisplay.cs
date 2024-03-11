@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,7 +21,6 @@ namespace JumpKingSaveStates.Menu
     public class CustomBindDisplay : EntityBTNode, IMenuItem, UnSelectable
     {
         private EBinding m_button;
-        private object m_pad;
         private SpriteFont Font => Game1.instance.contentManager.font.MenuFontSmall;
 
         public CustomBindDisplay(Entity p_entity, EBinding p_button)
@@ -31,32 +31,12 @@ namespace JumpKingSaveStates.Menu
 
         public void Draw(int x, int y, bool selected)
         {
-            // OnNewRun doesnt work
-            if (m_pad is null)
-            {
-                // GetComponent
-                MethodInfo m1 = typeof(EntityBTNode).GetMethod(nameof(EntityBTNode.GetComponent));
-
-                // <BlackBoardComp>
-                MethodInfo generic = m1.MakeGenericMethod(AccessTools.TypeByName("EntityComponent.BlackBoardComp"));
-                var _x = generic.Invoke(this, null);
-
-                // .Get
-                MethodInfo m2 = AccessTools.Method("EntityComponent.BlackBoardComp:Get");
-
-                // <PadInstance>
-                MethodInfo generic2 = m2.MakeGenericMethod(AccessTools.TypeByName("JumpKing.Controller.PadInstance"));
-
-                // ("BBKEY_PAD");
-                m_pad = generic2.Invoke(_x, new object[] { "BBKEY_PAD" });
-            }
-
-            var m_traverse_pad = Traverse.Create(m_pad);
+            var m_pad = ControllerManager.instance.GetMain();
 
             // key type
             string p_string = m_button.ToString() + " : ";
 
-            var pad = m_traverse_pad.Method("GetPad").GetValue<IPad>();
+            var pad = m_pad.GetPad();
 
             MenuItemHelper.Draw(x, y, p_string, Color.Gray, Font);
 
@@ -64,10 +44,7 @@ namespace JumpKingSaveStates.Menu
             foreach (int bind in JumpKingSaveStates.Preferences.KeyBindings[m_button])
             {
                 x += (int)((float)x2 / 3f);
-
-                // this is so dumb
-                p_string = Traverse.Create(pad).Method("ButtonToString", new object[] { bind }).GetValue<string>();
-                //p_string = pad.ButtonToString(bind);
+                p_string = pad.ButtonToString(bind);
 
                 p_string = FormatString(p_string);
                 MenuItemHelper.Draw(x, y, p_string, Color.Gray, Font);
