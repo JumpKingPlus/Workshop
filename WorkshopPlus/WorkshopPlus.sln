@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilGameLoopOrganizer", "Ut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingHitboxResizer", "JumpKingHitboxResizer\JumpKingHitboxResizer.csproj", "{301B640B-E524-4B75-BF9C-E3898CC05CD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingMultiplayer", "JumpKingMultiplayer\JumpKingMultiplayer.csproj", "{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{301B640B-E524-4B75-BF9C-E3898CC05CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{301B640B-E524-4B75-BF9C-E3898CC05CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{301B640B-E524-4B75-BF9C-E3898CC05CD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
