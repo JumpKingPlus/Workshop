@@ -8,6 +8,7 @@ using JumpKing.Workshop;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -100,6 +101,12 @@ namespace HitboxResizer
             width = PlayerValues.PLAYER_WIDTH;
             height = PlayerValues.PLAYER_HEIGHT;
             bool isDefault = true;
+
+            // null check
+            if (Game1.instance.contentManager.level.Info.Tags is null)
+            {
+                return !isDefault;
+            }
 
             foreach (string item in Game1.instance.contentManager.level.Info.Tags)
             {
