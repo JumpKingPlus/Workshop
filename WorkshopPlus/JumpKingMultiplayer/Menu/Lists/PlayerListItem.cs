@@ -15,8 +15,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JumpKingMultiplayer.Extensions;
+using JumpKingMultiplayer.Menu;
 
-namespace JumpKingMultiplayer.Menu
+namespace JumpKingMultiplayer.Menu.Lists
 {
     internal class PlayerListItem : TextInfo
     {
@@ -70,8 +72,7 @@ namespace JumpKingMultiplayer.Menu
             // owner badge
             if (MultiplayerManager.instance.LobbyId.HasValue)
             {
-                var owner = SteamMatchmaking.GetLobbyOwner(MultiplayerManager.instance.LobbyId.Value);
-                if (owner == playerData.SteamId)
+                if (MultiplayerManager.instance.LobbyOwner == playerData.SteamId)
                 {
                     Items[2] = new IconTextInfo("", Sprite.CreateSprite(ModEntry.HostFlag), Color.DarkGreen);
                 }

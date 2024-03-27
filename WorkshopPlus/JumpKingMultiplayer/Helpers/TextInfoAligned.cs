@@ -6,8 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JumpKingMultiplayer.Helpers;
+using JumpKingMultiplayer.Menu;
 
-namespace JumpKingMultiplayer.Menu
+namespace JumpKingMultiplayer.Helpers
 {
     enum TextAlignment
     {

@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using JumpKingMultiplayer.Extensions;
 
 namespace JumpKingMultiplayer.Models
 {
@@ -104,6 +105,7 @@ namespace JumpKingMultiplayer.Models
         {
         }
 
+        public readonly CSteamID UserSteamId = SteamUser.GetSteamID();
         private bool _alreadyDrawedPlayers = false;
 
         public static void DrawPlayers()
@@ -145,7 +147,7 @@ namespace JumpKingMultiplayer.Models
         public void GetUpdates()
         {
             if (!LobbyId.HasValue) { return; }
-            while (SteamNetworking.IsP2PPacketAvailable(out uint size))
+            if (SteamNetworking.IsP2PPacketAvailable(out uint size))
             {
                 var buffer = new byte[size];
                 if (SteamNetworking.ReadP2PPacket(buffer, size, out _, out CSteamID remoteId))
@@ -170,6 +172,7 @@ namespace JumpKingMultiplayer.Models
         internal Callback<LobbyCreated_t> cb_lobbyCreated;
         internal Callback<LobbyInvite_t> cb_lobbyInvite;
         internal Callback<LobbyEnter_t> cb_lobbyEnter;
+        internal Callback<LobbyDataUpdate_t> cb_lobbyUpdate;
         internal Callback<P2PSessionRequest_t> cb_p2p_session_request;
         internal Callback<LobbyChatUpdate_t> cb_lobby_update;
 
@@ -191,12 +194,13 @@ namespace JumpKingMultiplayer.Models
             if (!LobbyId.HasValue) { return; }
             // if owner leaves its lobby,
             // give it to the 2nd person that joined instead of disconnecting everyone
-            if (SteamMatchmaking.GetLobbyOwner(LobbyId.Value) == SteamUser.GetSteamID() && LobbyPlayers.Count > 1)
-            {
-                // does this work?
-                // https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyOwner
-                SteamMatchmaking.SetLobbyOwner(LobbyId.Value, LobbyPlayers[1]);
-            }
+            // update: this already is a feature by steam
+            //if (AmILobbyOwner && LobbyPlayers.Count > 1)
+            //{
+            //    // does this work?
+            //    // https://partner.steamgames.com/doc/api/ISteamMatchmaking#SetLobbyOwner
+            //    SteamMatchmaking.SetLobbyOwner(LobbyId.Value, LobbyPlayers[1]);
+            //}
             SteamMatchmaking.LeaveLobby(LobbyId.Value);
             Players.ForEach(x => x.IsDisposed = true);
             Players.Clear();
@@ -226,6 +230,8 @@ namespace JumpKingMultiplayer.Models
 
         public List<CSteamID> LobbyPlayers = new List<CSteamID>();
         public CSteamID? LobbyId;
+        public CSteamID? LobbyOwner;
+        public bool AmILobbyOwner => LobbyOwner == UserSteamId;
 
         public void UpdateLobbyMemberIds()
         {
@@ -235,7 +241,7 @@ namespace JumpKingMultiplayer.Models
             for (var idx = 0; idx < memCnt; idx++)
             {
                 var player = SteamMatchmaking.GetLobbyMemberByIndex(LobbyId.Value, idx);
-                if (player != Steamworks.SteamUser.GetSteamID())
+                if (player != UserSteamId)
                 {
                     Debug.WriteLine($" - {player.m_SteamID}");
                     _players.Add(player);
@@ -274,6 +280,7 @@ namespace JumpKingMultiplayer.Models
 
             cb_lobbyInvite = Callback<LobbyInvite_t>.Create((x) =>
             {
+                Debug.WriteLine($"[MP] Invited to {x.m_ulSteamIDUser}'s lobby: {x.m_ulSteamIDLobby}");
                 inviteInfo.AddInvite(new CSteamID(x.m_ulSteamIDUser), new CSteamID(x.m_ulSteamIDLobby));
             });
 
@@ -282,6 +289,13 @@ namespace JumpKingMultiplayer.Models
                 Debug.WriteLine($"[MP] Lobby joined {x.m_ulSteamIDLobby}");
                 LobbyId = new Steamworks.CSteamID(x.m_ulSteamIDLobby);
                 UpdateLobbyMemberIds();
+            });
+
+            cb_lobbyUpdate = Callback<LobbyDataUpdate_t>.Create((x) =>
+            {
+                Debug.WriteLine($"[MP] Lobby updated {x.m_ulSteamIDLobby}");
+                if (x.m_bSuccess != 1) { return; }
+                LobbyOwner = SteamMatchmaking.GetLobbyOwner(LobbyId.Value);
             });
 
             cb_p2p_session_request = Callback<P2PSessionRequest_t>.Create((x) =>

@@ -1,7 +1,9 @@
 ﻿using BehaviorTree;
 using JumpKing.PauseMenu;
+using JumpKingMultiplayer.Menu;
+using JumpKingMultiplayer.Menu.Lists;
 
-namespace JumpKingMultiplayer.Menu
+namespace JumpKingMultiplayer.Menu.Lists
 {
     internal class InvisiblePlayerList : PlayerList
     {

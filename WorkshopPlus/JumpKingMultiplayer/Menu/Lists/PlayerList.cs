@@ -14,8 +14,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Serialization;
+using JumpKingMultiplayer.Extensions;
+using JumpKingMultiplayer.Menu;
+using JumpKingMultiplayer.Menu.Lists;
 
-namespace JumpKingMultiplayer.Menu
+namespace JumpKingMultiplayer.Menu.Lists
 {
     public static class TextInfoExtentions
     {
@@ -54,10 +57,16 @@ namespace JumpKingMultiplayer.Menu
             return format.CalculateBounds(children.Cast<IMenuItem>().ToArray()).Size;
         }
 
+        private float m_timer = 0f;
+        protected readonly float RefreshTime = 0.2f;
+
         protected override BTresult MyRun(TickData p_data)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Tab))
+            m_timer += p_data.delta_time;
+
+            if (m_timer > RefreshTime && Keyboard.GetState().IsKeyDown(Keys.Tab))
             {
+                m_timer = 0;
                 var players = MultiplayerManager.instance.Players
                 //    //.Where(x => x.IsDisposed == false) // this is rather useless to keep commented
                     .Where(x => x.LevelId == PlayerSpriteStateExtensions.GetLevelId())
@@ -74,7 +83,7 @@ namespace JumpKingMultiplayer.Menu
                 //    }
 
                 //    children.Add(new PlayerListItem(
-                //        "You", SteamUser.GetSteamID(), GameLoop.m_player.m_body
+                //        "You", MultiplayerManager.instance.UserSteamId, GameLoop.m_player.m_body
                 //    ));
                 //}
                 //snapshot_players = players;
@@ -89,7 +98,7 @@ namespace JumpKingMultiplayer.Menu
 
                 // add self
                 players_in_map.Add(new PlayerListItem(
-                    "You", SteamUser.GetSteamID(), GameLoop.m_player.m_body
+                    "You", MultiplayerManager.instance.UserSteamId, GameLoop.m_player.m_body
                 ));
 
                 // remove all and readd

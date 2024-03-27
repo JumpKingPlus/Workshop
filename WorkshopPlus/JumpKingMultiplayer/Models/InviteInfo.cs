@@ -12,6 +12,8 @@ using JumpKingMultiplayer.Menu;
 using BehaviorTree;
 using JumpKing.PauseMenu.BT;
 using JumpKing.PauseMenu;
+using JumpKingMultiplayer.Menu.DisplayFrames;
+using JumpKingMultiplayer.Helpers;
 
 namespace JumpKingMultiplayer.Models
 {

@@ -61,20 +61,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EGhostPlayerDisplayType.cs" />
-    <Compile Include="Menu\DynamicDisplayFrame.cs" />
-    <Compile Include="Menu\TextInfoAligned.cs" />
+    <Compile Include="Helpers\DynamicDisplayFrame.cs" />
+    <Compile Include="Extensions\GuiFrame.cs" />
+    <Compile Include="Menu\DisplayFrames\LeaderboardDisplayFrame.cs" />
+    <Compile Include="Helpers\RunnableDisplayFrame.cs" />
+    <Compile Include="Menu\InviteToLobbyButton.cs" />
+    <Compile Include="Helpers\TextButtonToggle.cs" />
+    <Compile Include="Helpers\TextInfoAligned.cs" />
+    <Compile Include="Menu\ToggleCreateLobbyOnLaunch.cs" />
+    <Compile Include="Menu\ToggleOpenLobby.cs" />
     <Compile Include="Models\IGhostPlayerData.cs" />
-    <Compile Include="Menu\PlayerListItem.cs" />
+    <Compile Include="Menu\Lists\PlayerListItem.cs" />
     <Compile Include="Menu\ToggleLeaderboard.cs" />
     <Compile Include="Menu\CreateLeaveLobbyButton.cs" />
     <Compile Include="Models\GhostPlayer.cs" />
-    <Compile Include="Menu\InvisiblePlayerList.cs" />
+    <Compile Include="Menu\Lists\InvisiblePlayerList.cs" />
     <Compile Include="Models\InviteInfo.cs" />
     <Compile Include="Models\Leaderboard.cs" />
     <Compile Include="Models\MultiplayerManager.cs" />
-    <Compile Include="Menu\PlayerList.cs" />
-    <Compile Include="Models\PlayerSpriteState.cs" />
+    <Compile Include="Menu\Lists\PlayerList.cs" />
+    <Compile Include="Extensions\PlayerSpriteState.cs" />
     <Compile Include="Models\ProximityPlayers.cs" />
+    <Compile Include="Extensions\Sprite.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="MultiplayerPatches.cs" />
     <Compile Include="Preferences.cs" />
@@ -94,6 +102,7 @@
   <ItemGroup>
     <Content Include="Content\leaderboard_header.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

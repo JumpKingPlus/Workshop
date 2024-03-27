@@ -11,8 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JumpKingMultiplayer.Extensions;
+using JumpKingMultiplayer.Models;
 
-namespace JumpKingMultiplayer.Models
+namespace JumpKingMultiplayer.Extensions
 {
     static class PlayerSpriteStateExtensions
     {
