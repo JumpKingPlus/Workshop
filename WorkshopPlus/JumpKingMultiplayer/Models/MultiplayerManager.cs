@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using JumpKingMultiplayer.Extensions;
+using JumpKing;
+using JumpKingMultiplayer.Helpers;
 
 namespace JumpKingMultiplayer.Models
 {
@@ -59,6 +61,7 @@ namespace JumpKingMultiplayer.Models
         public float posX { get; set; }
         public float posY { get; set; }
         public ulong? levelId { get; set; }
+        public int colorIdx { get; set; }
         public PlayerSpriteEffect flip { get; set; }
         public PlayerSpriteState sprite { get; set; }
         public int skippedFrames { get; set; }
@@ -136,7 +139,15 @@ namespace JumpKingMultiplayer.Models
 
         public void SendToAll<T>(T message)
         {
-            var messageBytes = System.Text.Encoding.ASCII.GetBytes(Parser.ToString(message));
+            byte[] messageBytes;
+            try
+            {
+                messageBytes = Encoding.ASCII.GetBytes(Parser.ToString(message));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
             var len = (uint)messageBytes.Length;
             foreach (var sID in LobbyPlayers)
             {
@@ -219,7 +230,9 @@ namespace JumpKingMultiplayer.Models
                 {
                     name = Guid.NewGuid().ToString().Split('-')[0];
                 }
-                Players.Add(new GhostPlayer(name, id, Players.Count()));
+                // custom color per player
+                var color = data.colorIdx != 0 ? data.colorIdx : Players.Count() + 1;
+                Players.Add(new GhostPlayer(name, id, color));
                 idx = Players.Count - 1;
             }
             var player = Players[idx];

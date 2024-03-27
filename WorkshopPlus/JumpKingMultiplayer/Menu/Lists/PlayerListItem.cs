@@ -39,12 +39,15 @@ namespace JumpKingMultiplayer.Menu.Lists
             : base(steamName, Color.White)
         {
             Sprite.SetAlpha(0.25f);
+
             playerData = new GhostPlayer
             {
                 SteamName = steamName,
                 SteamId = steamId,
                 LevelId = PlayerSpriteStateExtensions.GetLevelId(),
-                Color = Color.White,
+                Color = (ModEntry.Preferences.LobbySettings.PersonalColor == 0) 
+                    ? Color.White 
+                    : GhostPlayer.ColorList[ModEntry.Preferences.LobbySettings.PersonalColor],
                 RelativePosition = Vector2.Zero,
                 AbsolutePosition = bodyComp.Position
             };
@@ -122,6 +125,7 @@ namespace JumpKingMultiplayer.Menu.Lists
                 {
                     item.Draw(x, y, false);
                 }
+
                 x += SizeForColumns[i];
                 x += 10;
                 i++;
@@ -155,8 +159,17 @@ namespace JumpKingMultiplayer.Menu.Lists
                     SizeForColumns[i] = size.X;
                 }
 
-                point.X += SizeForColumns[i] + 10;
+                point.X += SizeForColumns[i];
                 i++;
+
+                // dont add end padding
+                if (i == Items.Length)
+                {
+                    continue;
+                }
+
+                // horizontal padding
+                point.X += 10;
             }
 
             size = point;

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using JumpKingMultiplayer.Helpers;
 using JumpKingMultiplayer.Menu;
+using JumpKing;
+using HarmonyLib;
 
 namespace JumpKingMultiplayer.Helpers
 {
@@ -22,8 +24,10 @@ namespace JumpKingMultiplayer.Helpers
     {
         TextAlignment alignment;
         public Rectangle bounds;
+        public Color Color => Traverse.Create(this).Field("m_color").GetValue<Color>();
 
-        public TextInfoAligned(string p_text, Color p_color, TextAlignment p_alignment, Rectangle bounds) : base(p_text, p_color)
+        public TextInfoAligned(string p_text, Color p_color, TextAlignment p_alignment, Rectangle bounds)
+            : base(p_text, p_color)
         {
             alignment = p_alignment;
             this.bounds = bounds;
@@ -33,7 +37,7 @@ namespace JumpKingMultiplayer.Helpers
         {
             var textSize = base.GetSize();
             var location = new Vector2(x, y);
-            
+
             switch (alignment)
             {
                 case TextAlignment.Center:
@@ -49,7 +53,8 @@ namespace JumpKingMultiplayer.Helpers
                     break;
             }
 
-            base.Draw((int)location.X, (int)location.Y, selected);
+            // theory: font is unloaded so it becomes transparent on the next level
+            Game1.spriteBatch.DrawString(Game1.instance.contentManager.font.MenuFont, base.Text, location, Color);
         }
     }
 }

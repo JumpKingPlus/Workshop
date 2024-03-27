@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JumpKingMultiplayer.Extensions;
 using JumpKingMultiplayer.Models;
+using JumpKingMultiplayer.Helpers;
 
 namespace JumpKingMultiplayer.Extensions
 {
@@ -43,6 +44,7 @@ namespace JumpKingMultiplayer.Extensions
                 screenIndex1 = Camera.CurrentScreenIndex1,
                 posX = pos.X,
                 posY = pos.Y,
+                colorIdx = ModEntry.Preferences.LobbySettings.PersonalColor,
                 flip = m_flip == SpriteEffects.None 
                 ? PlayerSpriteEffect.None 
                 : m_flip == SpriteEffects.FlipHorizontally 
@@ -52,6 +54,28 @@ namespace JumpKingMultiplayer.Extensions
                 levelId = GetLevelId(),
             };
         }
+
+        public readonly static Type LayeredSpriteType = AccessTools.TypeByName("JumpKing.XnaWrappers.LayeredSprite");
+        
+        //public static StrippedSprite ToStrippedSprite(this Sprite sprite)
+        //{
+        //    if (sprite.GetType() == LayeredSpriteType)
+        //    {
+        //        var sprites = Traverse.Create(sprite).Property("Sprites").GetValue<List<Sprite>>();
+        //        foreach (var spr in sprites)
+        //        {
+
+        //        }
+        //    }
+        //    // todo: most of the times it returns a {JumpKing.XnaWrappers.LayeredSprite}, use this to override color list?
+        //    // https://community.monogame.net/t/most-efficient-way-to-combine-textures/16880
+        //    return new StrippedSprite(sprite.texture.ToTextureRaw(sprite.source), sprite.source);
+        //}
+
+        //public static Sprite ToSprite(this StrippedSprite strip)
+        //{
+        //    return Sprite.CreateSprite(strip.TextureRaw.ToTexture2D(strip.Source));
+        //}
 
         public static Sprite ToSprite(this PlayerSpriteState state)
         {

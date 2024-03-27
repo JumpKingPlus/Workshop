@@ -14,6 +14,7 @@ using System.ComponentModel;
 using JumpKing.Util;
 using JumpKing;
 using Microsoft.Xna.Framework.Graphics;
+using JumpKingMultiplayer.Menu.DisplayOptions;
 
 namespace JumpKingMultiplayer
 {
@@ -111,6 +112,7 @@ namespace JumpKingMultiplayer
             var drawables = Traverse.Create(factory).Field("m_drawables");
 
             MenuSelector menuSelector = new MenuSelector(format);
+            menuSelector.AddChild(new PersonalColorChangeOption());
             menuSelector.AddChild(new ToggleLeaderboard());
             menuSelector.AddChild(new ToggleProximityPlayers());
             menuSelector.AddChild(new GhostPlayerDisplayOption());

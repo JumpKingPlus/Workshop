@@ -17,6 +17,7 @@ using JumpKingMultiplayer.Menu.DisplayFrames;
 using JumpKingMultiplayer.Menu;
 using JumpKingMultiplayer.Menu.DisplayFrames;
 using JumpKingMultiplayer.Helpers;
+using JumpKingMultiplayer.Extensions;
 
 namespace JumpKingMultiplayer.Helpers
 {
@@ -25,20 +26,14 @@ namespace JumpKingMultiplayer.Helpers
         public DynamicDisplayFrame(GuiFormat p_format, BTresult p_static_result, float p_alpha)
             : base(p_format, p_static_result, Color.White, p_alpha)
         {
-            m_alpha = p_alpha;
         }
-
-        internal float m_alpha;
 
         public override BTresult Run(TickData p_data)
         {
-            foreach (var child in Children)
-            {
-                child.Run(p_data);
-            }
+            var bt = base.Run(p_data);
             Initialize();
             GetBounds();
-            return base.Run(p_data);
+            return bt;
         }
 
         private void GetBounds()

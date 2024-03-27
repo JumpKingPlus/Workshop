@@ -42,7 +42,8 @@ namespace JumpKingMultiplayer.Models
             anchor_bounds = new Rectangle(0, 0, JumpGame.GAME_RECT.Width, JumpGame.GAME_RECT.Height)
         };
 
-        static LeaderboardDisplayFrame leader_frame;
+        static DynamicDisplayFrame leader_frame;
+        static TextInfoAligned title_frame;
 
         public static Rectangle Bounds
         {
@@ -51,15 +52,20 @@ namespace JumpKingMultiplayer.Models
 
         public LeaderBoard()
         {
-            leader_frame = new LeaderboardDisplayFrame(leader_format, BTresult.Running, 0.5f);
-            
-            var title = new TextInfoAligned("Leaderboard", Color.Gold, TextAlignment.Center, Bounds);
-            leader_frame.PropertyChanged += (_, __) => title.bounds = leader_frame.Bounds;
-            leader_frame.AddChild(title);
+            leader_frame = new DynamicDisplayFrame(leader_format, BTresult.Running, 0.5f);
+
+            title_frame = new TextInfoAligned("Leaderboard", Color.Gold, TextAlignment.Center, Bounds);
+            leader_frame.PropertyChanged += OnBoundsChanged;
+            leader_frame.AddChild(title_frame);
             
             leader_frame.AddChild(new PlayerList(list));
             //leader_frame.AddChild(new InvisiblePlayerList(leader_format, list));
             leader_frame.Initialize();
+        }
+
+        private void OnBoundsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            title_frame.bounds = leader_frame.Bounds;
         }
 
         internal void Run(BehaviorTree.TickData p_data)

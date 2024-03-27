@@ -16,6 +16,7 @@ using JumpKingMultiplayer.Menu;
 using Steamworks;
 using JumpKingMultiplayer.Extensions;
 using JumpKingMultiplayer.Menu.Lists;
+using System.Diagnostics;
 
 namespace JumpKingMultiplayer.Models
 {
@@ -94,7 +95,7 @@ namespace JumpKingMultiplayer.Models
         public Color Color { get; set; }
 
 
-        public static Color[] ColorList = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Purple, Color.Gold, Color.Orange, Color.Brown };
+        public static Color[] ColorList = new Color[] { Color.Transparent, Color.Red, Color.Green, Color.Blue, Color.Purple, Color.Gold, Color.Orange, Color.Brown };
 
         public GhostPlayer()
         {
@@ -166,11 +167,20 @@ namespace JumpKingMultiplayer.Models
 
         public static int frameNum = 0;
 
+        public override void Destroy()
+        {
+            // nuh huh, not on my watch
+            if (IsDisposed)
+            {
+                base.Destroy();
+            }
+        }
+
         protected override void Update(float p_delta)
         {
             if (IsDisposed == true)
             {
-                this.Destroy();
+                base.Destroy();
             }
 
             frameNum += 1;

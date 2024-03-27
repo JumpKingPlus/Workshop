@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -83,11 +84,13 @@ namespace JumpKingMultiplayer
     {
         public bool OpenToJoin { get; set; }
         public bool CreateLobbyOnLaunch { get; set; }
+        public int PersonalColor { get; set; }
 
         public static LobbySettings Default = new LobbySettings
         {
             OpenToJoin = true,
-            CreateLobbyOnLaunch = false
+            CreateLobbyOnLaunch = false,
+            PersonalColor = 0
         };
     }
 }

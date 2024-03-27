@@ -61,18 +61,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EGhostPlayerDisplayType.cs" />
+    <Compile Include="Extensions\Texture2D.cs" />
     <Compile Include="Helpers\DynamicDisplayFrame.cs" />
     <Compile Include="Extensions\GuiFrame.cs" />
+    <Compile Include="Helpers\StrippedSprite.cs" />
     <Compile Include="Menu\DisplayFrames\LeaderboardDisplayFrame.cs" />
     <Compile Include="Helpers\RunnableDisplayFrame.cs" />
+    <Compile Include="Extensions\Enum.cs" />
+    <Compile Include="Menu\DisplayOptions\GhostPlayerDisplayOption.cs" />
+    <Compile Include="Menu\DisplayOptions\GhostPlayerOpacityOption.cs" />
     <Compile Include="Menu\InviteToLobbyButton.cs" />
     <Compile Include="Helpers\TextButtonToggle.cs" />
     <Compile Include="Helpers\TextInfoAligned.cs" />
     <Compile Include="Menu\ToggleCreateLobbyOnLaunch.cs" />
     <Compile Include="Menu\ToggleOpenLobby.cs" />
+    <Compile Include="Menu\DisplayOptions\ToggleProximityPlayers.cs" />
     <Compile Include="Models\IGhostPlayerData.cs" />
     <Compile Include="Menu\Lists\PlayerListItem.cs" />
-    <Compile Include="Menu\ToggleLeaderboard.cs" />
+    <Compile Include="Menu\DisplayOptions\ToggleLeaderboard.cs" />
     <Compile Include="Menu\CreateLeaveLobbyButton.cs" />
     <Compile Include="Models\GhostPlayer.cs" />
     <Compile Include="Menu\Lists\InvisiblePlayerList.cs" />
@@ -85,6 +91,7 @@
     <Compile Include="Extensions\Sprite.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="MultiplayerPatches.cs" />
+    <Compile Include="Menu\DisplayOptions\PersonalColorChangeOption.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -17,11 +17,11 @@ namespace JumpKingMultiplayer.Menu.DisplayFrames
         {
             base.Draw();
             Game1.spriteBatch.Draw(
-                ModEntry.LeaderboardHeader, 
+                ModEntry.LeaderboardHeader,
                 position: new Vector2(
                     (JumpGame.GAME_RECT.Width / 2) - (ModEntry.LeaderboardHeader.Width / 2), // horizontally centered
                     Bounds.Y - ModEntry.LeaderboardHeader.Height), // vertically on top of the gui frame
-                Color.White * m_alpha);
+                Color.White * alpha);
         }
     }
 }
