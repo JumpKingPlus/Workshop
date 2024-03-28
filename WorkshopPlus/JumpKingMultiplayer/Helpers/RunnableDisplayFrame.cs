@@ -5,6 +5,7 @@ using JumpKing.PauseMenu.BT;
 using Microsoft.Xna.Framework;
 using JumpKingMultiplayer.Extensions;
 using JumpKingMultiplayer.Menu.DisplayFrames;
+using System.Diagnostics;
 
 namespace JumpKingMultiplayer.Helpers
 {
@@ -18,6 +19,18 @@ namespace JumpKingMultiplayer.Helpers
         {
             this.color = color;
             this.alpha = alpha;
+        }
+
+        public float Alpha
+        {
+            get => alpha;
+            set => alpha = value;
+        }
+
+        public Color Color
+        {
+            get => color;
+            set => color = value;
         }
 
         public override BTresult Run(TickData p_data)

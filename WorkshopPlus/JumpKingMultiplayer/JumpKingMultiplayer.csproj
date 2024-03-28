@@ -76,13 +76,15 @@
     <Compile Include="Menu\ToggleCreateLobbyOnLaunch.cs" />
     <Compile Include="Menu\ToggleOpenLobby.cs" />
     <Compile Include="Menu\DisplayOptions\ToggleProximityPlayers.cs" />
+    <Compile Include="Models\Infos\EmptyLobbyInviteInfo.cs" />
     <Compile Include="Models\IGhostPlayerData.cs" />
     <Compile Include="Menu\Lists\PlayerListItem.cs" />
     <Compile Include="Menu\DisplayOptions\ToggleLeaderboard.cs" />
     <Compile Include="Menu\CreateLeaveLobbyButton.cs" />
     <Compile Include="Models\GhostPlayer.cs" />
     <Compile Include="Menu\Lists\InvisiblePlayerList.cs" />
-    <Compile Include="Models\InviteInfo.cs" />
+    <Compile Include="Models\Infos\Info.cs" />
+    <Compile Include="Models\Infos\InviteInfo.cs" />
     <Compile Include="Models\Leaderboard.cs" />
     <Compile Include="Models\MultiplayerManager.cs" />
     <Compile Include="Menu\Lists\PlayerList.cs" />

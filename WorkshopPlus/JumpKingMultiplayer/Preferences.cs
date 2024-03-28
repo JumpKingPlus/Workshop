@@ -15,6 +15,7 @@ namespace JumpKingMultiplayer
         private bool _isProximityPlayersEnabled = true;
         private EGhostPlayerDisplayType _ghostPlayerDisplayType = EGhostPlayerDisplayType.GhostPlayerAndLabel;
         private LobbySettings lobbySettings = LobbySettings.Default;
+        private Tips tips = Tips.Default;
         private float _ghostPlayerOpacity = 0.6f;
 
         /// <summary>
@@ -70,6 +71,16 @@ namespace JumpKingMultiplayer
             }
         }
 
+        public Tips Tips
+        {
+            get => tips;
+            set
+            {
+                tips = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -78,6 +89,16 @@ namespace JumpKingMultiplayer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+    }
+
+    public struct Tips
+    {
+        public bool InviteF4Tip { get; set; }
+
+        public static Tips Default = new Tips
+        {
+            InviteF4Tip = true
+        };
     }
 
     public struct LobbySettings

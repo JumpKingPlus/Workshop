@@ -38,6 +38,7 @@ namespace JumpKingMultiplayer
 
         static void RunNodes(BehaviorTree.TickData p_data)
         {
+            MultiplayerManager.instance.emptyLobbyInviteInfo?.Run(p_data);
             MultiplayerManager.instance.inviteInfo?.Run(p_data);
             MultiplayerManager.instance.leaderBoard?.Run(p_data);
         }

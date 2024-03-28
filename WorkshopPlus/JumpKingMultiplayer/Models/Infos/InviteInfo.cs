@@ -14,58 +14,51 @@ using JumpKing.PauseMenu.BT;
 using JumpKing.PauseMenu;
 using JumpKingMultiplayer.Menu.DisplayFrames;
 using JumpKingMultiplayer.Helpers;
+using JumpKingMultiplayer.Menu.Lists;
+using JumpKingMultiplayer.Models.Infos;
+using JumpKingMultiplayer.Models;
 
-namespace JumpKingMultiplayer.Models
+namespace JumpKingMultiplayer.Models.Infos
 {
-    internal class InviteInfo
+    internal class InviteInfo : Info
     {
-        RunnableDisplayFrame invite_frame;
-        float invite_alpha = 0.7f;
-        GuiFormat format = new GuiFormat
-        {
-            all_padding = 12,
-            all_margin = 15,
-            element_margin = 5,
-            anchor_bounds = new Rectangle(0, 0, JumpGame.GAME_RECT.Width, JumpGame.GAME_RECT.Height),
-            anchor = new Vector2(1f, 0f),
-        };
+        public CSteamID? id = null;
+        public CSteamID? lobbyId = null;
 
-        public InviteInfo()
-        {
-            Initialize();
-        }
+        public InviteInfo() : base() { }
 
-        public void Initialize()
+        protected override void Initialize()
         {
-            invite_frame = new RunnableDisplayFrame(format, BTresult.Running, Color.DarkGreen, invite_alpha);
+            frame = new RunnableDisplayFrame(format, BTresult.Running, Color.DarkGreen, alpha);
             var text_format = format;
             text_format.anchor_bounds.Width = 160;
 
             if (id.HasValue)
             {
-                invite_frame.AddChild(
+                frame.AddChild(
                     TextInfo.CreateOneFittedInfo(
                         text_format,
                         CreateLabel(id.Value),
-                        Color.White * invite_alpha,
+                        Color.White * alpha,
                         Game1.instance.contentManager.font.MenuFontSmall
                     )
                 );
             }
 
-            invite_frame.AddChild(new TextInfo("[F1] Accept", Color.DarkGreen));
-            invite_frame.AddChild(new TextInfo("[F2] Decline", Color.White));
+            frame.AddChild(new TextInfo("[F1] Accept", Color.DarkGreen));
+            frame.AddChild(new TextInfo("[F2] Decline", Color.White));
 
-            invite_frame.Initialize();
+            frame.Initialize();
         }
-
-        public CSteamID? id = null;
-        public CSteamID? lobbyId = null;
 
         public string CreateLabel(Steamworks.CSteamID id)
         {
             var name = Steamworks.SteamFriends.GetFriendPersonaName(id);
-            return $"{name} Invited you to their game.";
+            if (!Game1.instance.contentManager.font.MenuFontSmall.CanUseFontProperly(name))
+            {
+                name = "Jumper";
+            }
+            return $"{name} invited you to their game.";
         }
 
         public void AddInvite(CSteamID userId, CSteamID lobbyId)
@@ -105,18 +98,18 @@ namespace JumpKingMultiplayer.Models
             }
         }
 
-        public void Run(TickData data)
+        public override void Run(TickData data)
         {
-            invite_frame.Run(data);
+            frame.Run(data);
         }
 
-        public void Draw()
+        public override void Draw()
         {
             if (!id.HasValue) { return; }
             //var label = CreateLabel(id.Value);
             //TextHelper.DrawString(Game1.instance.contentManager.font.LocationFont, label, new Vector2(8f, 330f), new Color(255, 215, 0, 130), Vector2.Zero);
             //TextHelper.DrawString(Game1.instance.contentManager.font.LocationFont, "[F1] Accept   [F2] Decline", new Vector2(8f, 343f), new Color(255, 0, 0, 130), Vector2.Zero);
-            invite_frame.Draw();
+            frame.Draw();
         }
     }
 }

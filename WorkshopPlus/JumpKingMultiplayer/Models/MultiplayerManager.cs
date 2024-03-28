@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using JumpKingMultiplayer.Extensions;
 using JumpKing;
 using JumpKingMultiplayer.Helpers;
+using JumpKingMultiplayer.Models.Infos;
 
 namespace JumpKingMultiplayer.Models
 {
@@ -179,6 +180,7 @@ namespace JumpKingMultiplayer.Models
         internal LeaderBoard leaderBoard { get; set; }
         internal ProximityPlayers proximityPlayers { get; set; }
         internal InviteInfo inviteInfo { get; set; }
+        internal EmptyLobbyInviteInfo emptyLobbyInviteInfo { get; set; }
 
         internal Callback<LobbyCreated_t> cb_lobbyCreated;
         internal Callback<LobbyInvite_t> cb_lobbyInvite;
@@ -283,6 +285,7 @@ namespace JumpKingMultiplayer.Models
             leaderBoard = new LeaderBoard();
             proximityPlayers = new ProximityPlayers();
             inviteInfo = new InviteInfo();
+            emptyLobbyInviteInfo = new EmptyLobbyInviteInfo();
 
             cb_lobbyCreated = Callback<LobbyCreated_t>.Create((x) =>
             {
@@ -364,6 +367,7 @@ namespace JumpKingMultiplayer.Models
         
         public void Tick(float p_delta)
         {
+            emptyLobbyInviteInfo.Tick();
             inviteInfo.Tick();
             SendUpdateToOthers();
             GetUpdates();
@@ -372,6 +376,7 @@ namespace JumpKingMultiplayer.Models
         public void Draw()
         {
             proximityPlayers?.Draw();
+            emptyLobbyInviteInfo.Draw();
             inviteInfo.Draw();
             MultiplayerManager.DrawPlayers();
             MultiplayerManager.instance._alreadyDrawedPlayers = false;

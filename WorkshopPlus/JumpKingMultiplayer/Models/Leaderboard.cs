@@ -42,7 +42,7 @@ namespace JumpKingMultiplayer.Models
             anchor_bounds = new Rectangle(0, 0, JumpGame.GAME_RECT.Width, JumpGame.GAME_RECT.Height)
         };
 
-        static DynamicDisplayFrame leader_frame;
+        static LeaderboardDisplayFrame leader_frame;
         static TextInfoAligned title_frame;
 
         public static Rectangle Bounds
@@ -52,7 +52,7 @@ namespace JumpKingMultiplayer.Models
 
         public LeaderBoard()
         {
-            leader_frame = new DynamicDisplayFrame(leader_format, BTresult.Running, 0.5f);
+            leader_frame = new LeaderboardDisplayFrame(leader_format, BTresult.Running, 0.5f);
 
             title_frame = new TextInfoAligned("Leaderboard", Color.Gold, TextAlignment.Center, Bounds);
             leader_frame.PropertyChanged += OnBoundsChanged;
