@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingHitboxResizer", "Ju
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingMultiplayer", "JumpKingMultiplayer\JumpKingMultiplayer.csproj", "{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyDealer", "DependencyDealer\DependencyDealer.csproj", "{19833A9A-9C7B-46E0-8646-4B92BB9230EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyDealerTest", "DependencyDealerTest\DependencyDealerTest.csproj", "{F16DE304-FDAF-45CE-8C4E-E69C63AAFD95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B26F861B-BDFC-44D4-BCF6-D8C517A3C99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19833A9A-9C7B-46E0-8646-4B92BB9230EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19833A9A-9C7B-46E0-8646-4B92BB9230EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19833A9A-9C7B-46E0-8646-4B92BB9230EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19833A9A-9C7B-46E0-8646-4B92BB9230EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F16DE304-FDAF-45CE-8C4E-E69C63AAFD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F16DE304-FDAF-45CE-8C4E-E69C63AAFD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F16DE304-FDAF-45CE-8C4E-E69C63AAFD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F16DE304-FDAF-45CE-8C4E-E69C63AAFD95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
