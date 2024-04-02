@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtilGameLoopOrganizer
+namespace GameLoopPlus
 {
     [JumpKingMod(IDENTIFIER)]
     public static class ModEntry
     {
-        const string IDENTIFIER = "Phoenixx19.Util.GameLoopOrganizer";
-        const string HARMONY_IDENTIFIER = "Phoenixx19.Util.GameLoopOrganizer.Harmony";
-        const string SETTINGS_FILE = "Phoenixx19.Util.GameLoopOrganizer.Settings.xml";
+        const string IDENTIFIER = "Phoenixx19.Util.GameLoopPlus";
+        const string HARMONY_IDENTIFIER = "Phoenixx19.Util.GameLoopPlus.Harmony";
+        const string SETTINGS_FILE = "Phoenixx19.Util.GameLoopPlus.Settings.xml";
 
         /// <summary>
         /// Called by Jump King before the level loads
