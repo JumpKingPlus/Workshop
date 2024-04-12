@@ -103,7 +103,7 @@ namespace HitboxResizer
             bool isDefault = true;
 
             // null check
-            if (Game1.instance.contentManager.level.Info.Tags is null)
+            if (Game1.instance.contentManager?.level?.Info.Tags is null)
             {
                 return !isDefault;
             }
