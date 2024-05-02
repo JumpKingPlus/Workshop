@@ -11,10 +11,12 @@ namespace JumpKingPlus.Blocks
     /// <summary>
     /// An implementation of <see cref="IBlock"/> for the Thin Snow block used in Jump King+
     /// </summary>
-    public class ThinSnowBlock : BoxBlock
+    public class ThinSnowBlock : BoxBlock, IBlockDebugColor
     {
         /// <inheritdoc/>
         protected override bool canBlockPlayer => true;
+
+        public Color DebugColor => new Color(255, 255, 128);
 
         /// <summary>
         /// Ctor for creating a <see cref="ThinSnowBlock"/>

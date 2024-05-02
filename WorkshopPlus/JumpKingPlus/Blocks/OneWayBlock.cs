@@ -11,7 +11,7 @@ namespace JumpKingPlus.Blocks
     /// <summary>
     /// An implementation of <see cref="IBlock"/> for the One-Way blocks used in Jump King+
     /// </summary>
-    public class OneWayBlock : BoxBlock
+    public class OneWayBlock : BoxBlock, IBlockDebugColor
     {
         private readonly Rectangle collider;
 
@@ -25,6 +25,8 @@ namespace JumpKingPlus.Blocks
         /// the nuance of the collision during the block behaviour when we have more context
         /// </summary>
         protected override bool canBlockPlayer => false;
+
+        public Color DebugColor => new Color(65, 65, 65);
 
         /// <summary>
         /// Ctor for creating a <see cref="OneWayBlock"/>

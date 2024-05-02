@@ -11,7 +11,7 @@ namespace JumpKingPlus.Blocks
     /// <summary>
     /// An implementation of <see cref="IBlock"/> for the Warp Blocks used in Jump King+
     /// </summary>
-    public class WarpBlock : IBlock
+    public class WarpBlock : IBlock, IBlockDebugColor
     {
         public const int PixelToGameFactor = 8;
 
@@ -26,6 +26,8 @@ namespace JumpKingPlus.Blocks
         /// The Y position to warp to
         /// </summary>
         public int Y { get; private set; }
+
+        public Color DebugColor => new Color(0, 0, 75);
 
         /// <summary>
         /// Ctor for creating a <see cref="WarpBlock"/>
