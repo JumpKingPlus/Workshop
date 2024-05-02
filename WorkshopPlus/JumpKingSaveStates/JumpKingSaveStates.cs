@@ -16,6 +16,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using JumpKing.PauseMenu;
+using EntityComponent;
+using JumpKing.Player;
+using static JumpKing.JKContentManager.Audio;
+using JumpKingSaveStates.Menu;
 
 namespace JumpKingSaveStates
 {
@@ -29,10 +33,17 @@ namespace JumpKingSaveStates
         private static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
         public static CustomPadInstance PadInstance { get; private set; }
+        private static SavestateBehaviour Behaviour { get; set; }
 
         internal static JKSound DeleteSave { get; private set; }
 
         #region Menu Items
+        [PauseMenuItemSetting]
+        public static ToggleSavestates Toggle(object factory, GuiFormat format)
+        {
+            return new ToggleSavestates();
+        }
+
         [PauseMenuItemSetting]
         [MainMenuItemSetting]
         public static TextButton BindSettings(object factory, GuiFormat format)
@@ -74,6 +85,9 @@ namespace JumpKingSaveStates
                 Preferences = new Preferences();
             }
 
+            // toggle savestates
+            Preferences.PropertyChanged += ToggleSavestates;
+
             // add save on property changed
             Preferences.PropertyChanged += SaveSettingsOnFile;
 
@@ -81,8 +95,31 @@ namespace JumpKingSaveStates
             var harmony = new Harmony(HARMONY_IDENTIFIER);
 
             // patching on each class (is better than attributes)
-            new GameLoopRun(harmony);
+            //new GameLoopRun(harmony);
             PadInstance = new CustomPadInstance(harmony);
+            Behaviour = new SavestateBehaviour();
+        }
+
+        private static void ToggleSavestates(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Preferences.IsEnabled))
+                return;
+
+            if (!bool.TryParse(((Preferences)sender).IsEnabled.ToString(), out bool isEnabled))
+                return;
+
+            PlayerEntity player = EntityManager.instance.Find<PlayerEntity>();
+            if (player is null)
+                return;
+
+            if (isEnabled)
+            {
+                player.m_body.RegisterBehaviour(Behaviour);
+            }
+            else
+            {
+                player.m_body.RemoveBehaviour(Behaviour);
+            }
         }
 
         private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
@@ -100,6 +137,13 @@ namespace JumpKingSaveStates
         [OnLevelStart]
         public static void OnLevelStart()
         {
+            // enable behaviour if it is enabled (on boot time)
+            PlayerEntity player = EntityManager.instance.Find<PlayerEntity>();
+            if (Preferences.IsEnabled)
+            {
+                player?.m_body.RegisterBehaviour(Behaviour);
+            }
+
             // load savestate delete sfx
             DeleteSave = new JKSound(
                 Game1.instance.contentManager.Load<SoundEffect>($@"{AssemblyPath}\Content\delete_savestate"),

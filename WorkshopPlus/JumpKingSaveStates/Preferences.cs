@@ -14,6 +14,7 @@ namespace JumpKingSaveStates
         [XmlIgnore]
         const int MAX_QUEUE_SIZE = 4;
 
+        private bool _isEnabled = false;
         private ConcurrentDropoutQueue<SaveState> saveStates = 
             new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, SaveState.Default);
 
@@ -74,6 +75,16 @@ namespace JumpKingSaveStates
             set
             {
                 saveStates = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }

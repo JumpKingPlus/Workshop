@@ -65,10 +65,12 @@
     <Compile Include="Menu\CustomBindDefault.cs" />
     <Compile Include="Menu\CustomBindDisplay.cs" />
     <Compile Include="Menu\CustomSaveBind.cs" />
+    <Compile Include="Menu\ToggleSavestates.cs" />
     <Compile Include="Models\CustomPadInstance.cs" />
     <Compile Include="Models\GameLoopRun.cs" />
     <Compile Include="Models\MenuOptions.cs" />
     <Compile Include="Preferences.cs" />
+    <Compile Include="SavestateBehaviour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\TeleportToLocationNode.cs" />
   </ItemGroup>
