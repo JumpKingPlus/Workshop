@@ -20,9 +20,19 @@ namespace TASStudio {
 		
 		
 		private GameMemory memory = new GameMemory();
-		
-		
-		private int totalFrames = 0, currentFrame = 0;
+
+        private const int WS_SYSMENU = 0x80000;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.Style &= ~WS_SYSMENU;
+                return myCp;
+            }
+        }
+
+        private int totalFrames = 0, currentFrame = 0;
 		private bool updating = false;
 		private DateTime lastChanged = DateTime.MinValue;
 
