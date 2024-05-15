@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JumpKing.JKContentManager;
 
 namespace JumpKingLevelPercentage.Models
 {
@@ -23,20 +24,26 @@ namespace JumpKingLevelPercentage.Models
                 typeof(GameLoop).GetMethod(nameof(GameLoop.Draw)),
                 postfix: new HarmonyMethod(AccessTools.Method(typeof(GameLoopDraw), nameof(Draw)))
             );
+
+            // cannot patch JumpKing.MiscSystems.LocationText.LocationTextManager:SetSettingsData(LocationSettings p_settings)
+            // as it gets inlined, read https://harmony.pardeike.net/articles/intro.html#limits-of-runtime-patching
             harmony.Patch(
-                AccessTools.Method(typeof(GameLoop), "OnNewRun"),
+                AccessTools.Method(typeof(GameLoop), nameof(GameLoop.OnPreGameStart)),
                 postfix: new HarmonyMethod(AccessTools.Method(typeof(GameLoopDraw), nameof(GetLocations)))
             );
         }
 
-        static void GetLocations(GameLoop __instance)
+        static void GetLocations()
         {
-            var settings = Traverse.Create(__instance)
-                .Field("m_location_text_manager")
-                .Property("SETTINGS")
-                .GetValue<LocationSettings>();
+            var p_settings = AccessTools.StaticFieldRefAccess<LocationSettings>(
+                "JumpKing.MiscSystems.LocationText.LocationTextManager:_settings"
+            );
+            //var settings = Traverse.Create(__instance)
+            //    .Field("m_location_text_manager")
+            //    .Property("SETTINGS")
+            //    .GetValue<LocationSettings>();
 
-            Locations = settings.locations;
+            Locations = ((LocationSettings)p_settings).locations;
 
             //NormalEnding.ENDING_SCREEN0
             //NewBabePlusEnding.ENDING_SCREEN0
@@ -87,10 +94,10 @@ namespace JumpKingLevelPercentage.Models
 
         static Location[] Locations { get; set; }
 
-        private static int[] FirstBabeAreas { get; set; }
-        private static int[] SecondBabeAreas { get; set; }
-        private static int[] ThirdBabeAreas { get; set; }
-         
+        private static int[] FirstBabeAreas { get; set; } = new int[0];
+        private static int[] SecondBabeAreas { get; set; } = new int[0];
+        private static int[] ThirdBabeAreas { get; set; } = new int[0];
+
         static void Draw(GameLoop __instance)
         {
             // if not in pause (!PauseManager.instance.IsPaused) AND if enabled
