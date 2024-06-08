@@ -1,20 +1,14 @@
-﻿using BehaviorTree;
+﻿using EntityComponent;
 using HarmonyLib;
-using JumpKing;
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
-using JumpKing.PauseMenu.BT;
+using JumpKingLastJumpValue.Entities;
 using JumpKingLastJumpValue.Menu;
 using JumpKingLastJumpValue.Models;
-using MonoMod.Utils;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingLastJumpValue
 {
@@ -25,11 +19,13 @@ namespace JumpKingLastJumpValue
         const string HARMONY_IDENTIFIER = "Phoenixx19.LastJumpValue.Harmony";
         const string SETTINGS_FILE = "Phoenixx19.LastJumpValue.Settings.xml";
 
-        private static string AssemblyPath { get; set; }
+        public static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
 
+        private static EntityJumpGauge entityJumpGauge;
+
         [BeforeLevelLoad]
-        public static void OnLevelStart()
+        public static void BeforeLevelLoad()
         {
 #if DEBUG
             Debugger.Launch();
@@ -38,7 +34,7 @@ namespace JumpKingLastJumpValue
 
             // set path for dll
             AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            
+
             // try reading config file
             try
             {
@@ -61,10 +57,23 @@ namespace JumpKingLastJumpValue
             new GameLoopDraw(harmony);
         }
 
+        [OnLevelStart]
+        public static void OnLevelStart()
+        {
+            entityJumpGauge = new EntityJumpGauge();
+            EntityManager.instance.AddObject(entityJumpGauge);
+        }
+
+        [OnLevelEnd]
+        public static void OnLevelEnd()
+        {
+            EntityManager.instance.RemoveObject(entityJumpGauge);
+        }
+
         #region Menu Items
         [PauseMenuItemSetting]
         [MainMenuItemSetting]
-        public static ToggleLastJumpValue Toggle(object factory, GuiFormat format)
+        public static ToggleLastJumpValue ToggleLJV(object factory, GuiFormat format)
         {
             return new ToggleLastJumpValue();
         }
@@ -74,6 +83,13 @@ namespace JumpKingLastJumpValue
         public static LastJumpValueOption Option(object factory, GuiFormat format)
         {
             return new LastJumpValueOption();
+        }
+
+        [PauseMenuItemSetting]
+        [MainMenuItemSetting]
+        public static ToggleGaugeDisplay ToggleGD(object factory, GuiFormat format)
+        {
+            return new ToggleGaugeDisplay();
         }
         #endregion
 
