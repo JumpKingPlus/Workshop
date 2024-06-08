@@ -1,8 +1,6 @@
-﻿using EntityComponent;
-using HarmonyLib;
+﻿using HarmonyLib;
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
-using JumpKingLastJumpValue.Entities;
 using JumpKingLastJumpValue.Menu;
 using JumpKingLastJumpValue.Models;
 using System;
@@ -21,8 +19,6 @@ namespace JumpKingLastJumpValue
 
         public static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
-
-        private static EntityJumpGauge entityJumpGauge;
 
         [BeforeLevelLoad]
         public static void BeforeLevelLoad()
@@ -55,19 +51,6 @@ namespace JumpKingLastJumpValue
             // patching on each class (is better than attributes)
             new JumpChargeCalc(harmony);
             new GameLoopDraw(harmony);
-        }
-
-        [OnLevelStart]
-        public static void OnLevelStart()
-        {
-            entityJumpGauge = new EntityJumpGauge();
-            EntityManager.instance.AddObject(entityJumpGauge);
-        }
-
-        [OnLevelEnd]
-        public static void OnLevelEnd()
-        {
-            EntityManager.instance.RemoveObject(entityJumpGauge);
         }
 
         #region Menu Items

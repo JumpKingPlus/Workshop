@@ -1,13 +1,21 @@
-﻿using HarmonyLib;
+﻿using EntityComponent;
+using HarmonyLib;
 using JumpKing;
 using JumpKing.GameManager;
+using JumpKing.Player;
 using JumpKing.Util;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 
 namespace JumpKingLastJumpValue.Models
 {
     class GameLoopDraw
     {
+        private static BodyComp bodyComp;
+        private static Texture2D texture;
+
         public GameLoopDraw(Harmony harmony)
         {
             harmony.Patch(
@@ -18,27 +26,88 @@ namespace JumpKingLastJumpValue.Models
 
         static void Draw(GameLoop __instance)
         {
-            // if not in pause (!PauseManager.instance.IsPaused) AND if enabled
-            if (JumpKingLastJumpValue.Preferences.IsEnabled &&
-                !Traverse.Create(__instance).Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
+            // if not in pause (!PauseManager.instance.IsPaused)
+            if (!Traverse.Create(__instance).Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
             {
-                if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
-                {
-                    TextHelper.DrawString(
-                    Game1.instance.contentManager.font.MenuFont,
-                    $"Last Jump: {JumpChargeCalc.JumpPercentage.ToString("0.00")}%",
-                    new Vector2(12f, 26f),
-                    //new Vector2(12f, 44f),
-                    Color.White, Vector2.Zero, true);
-                    return;
-                }
-
-                TextHelper.DrawString(
-                    Game1.instance.contentManager.font.MenuFont,
-                    $"{JumpChargeCalc.JumpFrames} frames",
-                    new Vector2(12f, 26f),
-                    Color.White, Vector2.Zero, true);
+                DrawText();
+                DrawGauge();
             }
         }
+
+        private static void DrawText()
+        {
+            if (!JumpKingLastJumpValue.Preferences.IsEnabled)
+            {
+                return;
+            }
+            if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
+            {
+                TextHelper.DrawString(
+                Game1.instance.contentManager.font.MenuFont,
+                $"Last Jump: {(JumpChargeCalc.JumpPercentage * 100.0f).ToString("0.00")}%",
+                new Vector2(12f, 26f),
+                //new Vector2(12f, 44f),
+                Color.White, Vector2.Zero, true);
+                return;
+            }
+
+            TextHelper.DrawString(
+                Game1.instance.contentManager.font.MenuFont,
+                $"{JumpChargeCalc.JumpFrames} frames",
+                new Vector2(12f, 26f),
+                Color.White, Vector2.Zero, true);
+        }
+
+        private static void DrawGauge()
+        {
+            if (!JumpKingLastJumpValue.Preferences.ShowGauge)
+            {
+                return;
+            }
+
+            if (bodyComp == null)
+            {
+                PlayerEntity player = EntityManager.instance.Find<PlayerEntity>();
+                if (player == null)
+                {
+                    return;
+                }
+                bodyComp = player.m_body;
+            }
+
+            if (texture == null)
+            {
+                char sep = Path.DirectorySeparatorChar;
+                texture = Game1.instance.contentManager.Load<Texture2D>($"{JumpKingLastJumpValue.AssemblyPath}{sep}Content{sep}gauge");
+            }
+
+            // when in water the percentages are a bit off (and can go above 100) so we limit
+            float percentage = Math.Min(JumpChargeCalc.JumpPercentage, 100.0f);
+            int absolute = (int)(texture.Height * percentage);
+            Vector2 position = new Vector2(
+                Math.Max(0, (int)(bodyComp.Position.X + 0.5f) - 12),
+                bodyComp.Position.Y + Camera.CurrentScreen * 360 - 14);
+            Vector2 vectorBottom = new Vector2(
+                position.X,
+                position.Y + texture.Height - absolute);
+            Rectangle rectangleBottom = new Rectangle(
+            texture.Width / 2,
+                texture.Height - absolute,
+                texture.Width / 2,
+                absolute);
+
+            Game1.spriteBatch.Draw(
+                        texture: texture,
+                        position: vectorBottom,
+                        sourceRectangle: rectangleBottom,
+                        color: Color.White);
+            Game1.spriteBatch.Draw(
+            texture: texture,
+            position: position,
+            sourceRectangle: new Rectangle(0, 0, texture.Width / 2, texture.Height),
+                        color: Color.White);
+        }
+
     }
 }
+
