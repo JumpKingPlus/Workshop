@@ -73,21 +73,21 @@ namespace JumpKingLastJumpValue.Models
                 position.X,
                 position.Y + texture.Height - absolute);
             Rectangle rectangleBottom = new Rectangle(
-            texture.Width / 2,
+                texture.Width / 2,
                 texture.Height - absolute,
                 texture.Width / 2,
                 absolute);
 
             Game1.spriteBatch.Draw(
-                        texture: texture,
-                        position: vectorBottom,
-                        sourceRectangle: rectangleBottom,
-                        color: Color.White);
+                texture: texture,
+                position: vectorBottom,
+                sourceRectangle: rectangleBottom,
+                color: Color.White);
             Game1.spriteBatch.Draw(
-            texture: texture,
-            position: position,
-            sourceRectangle: new Rectangle(0, 0, texture.Width / 2, texture.Height),
-                        color: Color.White);
+                texture: texture,
+                position: position,
+                sourceRectangle: new Rectangle(0, 0, texture.Width / 2, texture.Height),
+                color: Color.White);
         }
 
     }
