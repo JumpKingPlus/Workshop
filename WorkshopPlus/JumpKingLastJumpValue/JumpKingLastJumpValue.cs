@@ -1,8 +1,12 @@
-﻿using HarmonyLib;
+﻿using EntityComponent;
+using HarmonyLib;
+using JumpKing;
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
+using JumpKing.Player;
 using JumpKingLastJumpValue.Menu;
 using JumpKingLastJumpValue.Models;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -51,6 +55,29 @@ namespace JumpKingLastJumpValue
             // patching on each class (is better than attributes)
             new JumpChargeCalc(harmony);
             new GameLoopDraw(harmony);
+
+            // load texture
+            char sep = Path.DirectorySeparatorChar;
+            GameLoopDraw.texture = Game1.instance.contentManager.Load<Texture2D>($"{AssemblyPath}{sep}Content{sep}gauge");
+        }
+
+        [OnLevelStart]
+        public static void OnLevelStart()
+        {
+            // get the player
+            PlayerEntity player = EntityManager.instance.Find<PlayerEntity>();
+            if (player == null)
+            {
+                return;
+            }
+            GameLoopDraw.bodyComp = player.m_body;
+        }
+
+        [OnLevelEnd]
+        public static void OnLevelEnd()
+        {
+            // null the player
+            GameLoopDraw.bodyComp = null;
         }
 
         #region Menu Items

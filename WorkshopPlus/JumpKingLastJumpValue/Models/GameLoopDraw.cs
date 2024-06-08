@@ -1,5 +1,4 @@
-﻿using EntityComponent;
-using HarmonyLib;
+﻿using HarmonyLib;
 using JumpKing;
 using JumpKing.GameManager;
 using JumpKing.Player;
@@ -7,14 +6,13 @@ using JumpKing.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.IO;
 
 namespace JumpKingLastJumpValue.Models
 {
     class GameLoopDraw
     {
-        private static BodyComp bodyComp;
-        private static Texture2D texture;
+        public static BodyComp bodyComp;
+        public static Texture2D texture;
 
         public GameLoopDraw(Harmony harmony)
         {
@@ -60,25 +58,9 @@ namespace JumpKingLastJumpValue.Models
 
         private static void DrawGauge()
         {
-            if (!JumpKingLastJumpValue.Preferences.ShowGauge)
+            if (!JumpKingLastJumpValue.Preferences.ShowGauge || bodyComp == null || texture == null)
             {
                 return;
-            }
-
-            if (bodyComp == null)
-            {
-                PlayerEntity player = EntityManager.instance.Find<PlayerEntity>();
-                if (player == null)
-                {
-                    return;
-                }
-                bodyComp = player.m_body;
-            }
-
-            if (texture == null)
-            {
-                char sep = Path.DirectorySeparatorChar;
-                texture = Game1.instance.contentManager.Load<Texture2D>($"{JumpKingLastJumpValue.AssemblyPath}{sep}Content{sep}gauge");
             }
 
             // when in water the percentages are a bit off (and can go above 100) so we limit
