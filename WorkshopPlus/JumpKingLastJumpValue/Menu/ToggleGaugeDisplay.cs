@@ -8,7 +8,7 @@ namespace JumpKingLastJumpValue.Menu
         {
         }
 
-        protected override string GetName() => "Show Gauge";
+        protected override string GetName() => "Display Gauge";
 
         protected override void OnToggle()
         {
