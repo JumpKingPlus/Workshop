@@ -27,17 +27,19 @@ namespace JumpKingLastJumpValue.Models
             // if not in pause (!PauseManager.instance.IsPaused)
             if (!Traverse.Create(__instance).Field("m_pause_manager").Property("IsPaused").GetValue<bool>())
             {
-                DrawText();
-                DrawGauge();
+                if (JumpKingLastJumpValue.Preferences.IsEnabled)
+                {
+                    DrawText();
+                }
+                if (JumpKingLastJumpValue.Preferences.ShowGauge)
+                {
+                    DrawGauge();
+                }
             }
         }
 
         private static void DrawText()
         {
-            if (!JumpKingLastJumpValue.Preferences.IsEnabled)
-            {
-                return;
-            }
             if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
             {
                 TextHelper.DrawString(
@@ -58,7 +60,7 @@ namespace JumpKingLastJumpValue.Models
 
         private static void DrawGauge()
         {
-            if (!JumpKingLastJumpValue.Preferences.ShowGauge || bodyComp == null || texture == null)
+            if (bodyComp == null || texture == null)
             {
                 return;
             }
