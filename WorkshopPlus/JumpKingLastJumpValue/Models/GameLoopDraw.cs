@@ -43,11 +43,11 @@ namespace JumpKingLastJumpValue.Models
             if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
             {
                 TextHelper.DrawString(
-                Game1.instance.contentManager.font.MenuFont,
-                $"Last Jump: {(JumpChargeCalc.JumpPercentage * 100.0f).ToString("0.00")}%",
-                new Vector2(12f, 26f),
-                //new Vector2(12f, 44f),
-                Color.White, Vector2.Zero, true);
+                    Game1.instance.contentManager.font.MenuFont,
+                    $"Last Jump: {(JumpChargeCalc.JumpPercentage * 100.0f).ToString("0.00")}%",
+                    new Vector2(12f, 26f),
+                    //new Vector2(12f, 44f),
+                    Color.White, Vector2.Zero, true);
                 return;
             }
 
