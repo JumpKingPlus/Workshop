@@ -40,23 +40,23 @@ namespace JumpKingLastJumpValue.Models
 
         private static void DrawText()
         {
+            string text;
             if (JumpKingLastJumpValue.Preferences.DisplayType == ELastJumpDisplayType.Percentage)
             {
-                TextHelper.DrawString(
-                    Game1.instance.contentManager.font.MenuFont,
-                    $"Last Jump: {(JumpChargeCalc.JumpPercentage * 100.0f).ToString("0.00")}%",
-                    new Vector2(12f, 26f),
-                    //new Vector2(12f, 44f),
-                    Color.White, Vector2.Zero, true);
-                return;
+                text = $"Last Jump: {(JumpChargeCalc.JumpPercentage * 100.0f).ToString("0.00")}%";
+            }
+            else
+            {
+                text = $"{JumpChargeCalc.JumpFrames} frames";
             }
 
             TextHelper.DrawString(
                 Game1.instance.contentManager.font.MenuFont,
-                $"{JumpChargeCalc.JumpFrames} frames",
+                text,
                 new Vector2(12f, 26f),
                 Color.White, Vector2.Zero, true);
         }
+
 
         private static void DrawGauge()
         {
@@ -66,7 +66,7 @@ namespace JumpKingLastJumpValue.Models
             }
 
             // when in water the percentages are a bit off (and can go above 100) so we limit
-            float percentage = Math.Min(JumpChargeCalc.JumpPercentage, 100.0f);
+            float percentage = Math.Min(JumpChargeCalc.JumpPercentage, 1.0f);
             int absolute = (int)(texture.Height * percentage);
             Vector2 position = new Vector2(
                 Math.Max(0, (int)(bodyComp.Position.X + 0.5f) - 12),
