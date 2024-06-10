@@ -1,14 +1,6 @@
 ﻿using BehaviorTree;
 using HarmonyLib;
-using JumpKing.GameManager;
 using JumpKing.Player;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingLastJumpValue.Models
 {
@@ -43,7 +35,7 @@ namespace JumpKingLastJumpValue.Models
             }
 
             // calculating percentage
-            JumpPercentage = m_timer / __instance.CHARGE_TIME * 100f;
+            JumpPercentage = m_timer / __instance.CHARGE_TIME;
 
             // reset values
             if (__instance.last_result != BTresult.Running)
