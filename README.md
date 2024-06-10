@@ -12,7 +12,7 @@ Here you can find the porting status of all the JumpKingPlus mods on the Jump Ki
 |Quick restart|Restarts faster than default|Yes|Incorporated in-game (renamed to QuickLoad)|
 |Custom mode|Testing your custom level locally|Yes|Incorporated in-game|
 |Full statistics|Adds sessions, attempts to the "Total Statistics" menu|Yes|Incorporated in-game|
-![JumpKingPlus Blocks](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingPlus)|JumpKingPlus additional blocks.|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3140151035)|
+|[JumpKingPlus Blocks](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingPlus)|JumpKingPlus additional blocks.|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3140151035)|
 |[InstAchievements](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingInstAchievements)|Main game fix to get the achievements instantly when occurred.|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3156400028)|
 |[Jump%](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingLastJumpValue)|Last jump charge value.|Yes (found under 'Cheats')|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3158935297)|
 |[Level%](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingLevelPercentage)|Current level percentage completion.|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3174793802)|
