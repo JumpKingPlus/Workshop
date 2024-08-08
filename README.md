@@ -19,7 +19,7 @@ Here you can find the porting status of all the JumpKingPlus mods on the Jump Ki
 |[Player Coordinates](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingPlayerCoordinates)|Shows player's game coordinates.|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3159306315)|
 |[Savestates](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingSaveStates)|Saves and loads saved positions.|Yes (found under 'Cheats')|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3161216998)|
 |[Multiplayer](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingMultiplayer)|Play with/against your friends (uses Steam P2P)|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3190590114)|
-|Discord Rich Presence (aka Discord RPC)|Shows various information about which map you are playing, how long you've been playing for, et cetera|Yes|No|
+|[Discord Rich Presence (aka Discord RPC)](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingDiscordRPC)|Shows various information about which map you are playing, how long you've been playing for, et cetera|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3305436437)|
 |[Disable NPC speech](https://github.com/gitAdrianK/LessNpcDialog)|Disables all NPC speeches when enabled|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3262816502)|
 |[Disable location intro](https://github.com/gitAdrianK/LessLocationText)|Disables the text showing the new location|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3267680999)|
 |Easter eggs|🥚|Yes|No & won't be ported (Reason: not worth it)|
