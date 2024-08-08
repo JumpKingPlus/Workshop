@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilCustomRenderTarget", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingPlus", "JumpKingPlus\JumpKingPlus.csproj", "{8536D14B-84F6-4F83-ADB7-0C7820C80D44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpKingDiscordRPC", "JumpKingDiscordRPC\JumpKingDiscordRPC.csproj", "{6230DB56-0CFD-473D-839C-3E1B8632A306}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{8536D14B-84F6-4F83-ADB7-0C7820C80D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8536D14B-84F6-4F83-ADB7-0C7820C80D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8536D14B-84F6-4F83-ADB7-0C7820C80D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6230DB56-0CFD-473D-839C-3E1B8632A306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6230DB56-0CFD-473D-839C-3E1B8632A306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6230DB56-0CFD-473D-839C-3E1B8632A306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6230DB56-0CFD-473D-839C-3E1B8632A306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{A62808B4-7205-4845-89E5-79D9DB64EE07} = {3BB866CD-EC8D-475C-B3BF-6E3887F367E6}
 		{F5E1630A-2397-42AD-8F0C-E5972B035ED0} = {70127BB9-9F4C-4E38-84D3-D5265476CC9B}
 		{8536D14B-84F6-4F83-ADB7-0C7820C80D44} = {5DE3EAA9-226C-4801-9E53-03175C4B89DF}
+		{6230DB56-0CFD-473D-839C-3E1B8632A306} = {5DE3EAA9-226C-4801-9E53-03175C4B89DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F8E69AE-9E99-46A7-9A7D-944B54419A82}
