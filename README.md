@@ -33,7 +33,7 @@ If you have an enhancement that **originated from JK+ and it's currently missing
 
 - [DependencyDealer](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/DependencyDealer) (deals with Steam's missing dependencies)
 - [HitboxResizer](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingHitboxResizer) (resizes the hitbox for a certain map)
-- [Jump Preview](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingJumpArch) (shows the approximately where you will end up when charging)
+- [Jump Preview](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingJumpArch) (shows approximately where you will end up when charging, this is not perfect but works with 90% accuracy)
 - ShootMe's [JumpKingTAS](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingTAS)
 - ShootMe's [JumpKingManager](https://github.com/JumpKingPlus/Workshop/tree/main/WorkshopPlus/JumpKingManager)
 
