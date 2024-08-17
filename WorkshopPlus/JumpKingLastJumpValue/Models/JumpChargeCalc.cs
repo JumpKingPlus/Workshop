@@ -1,6 +1,7 @@
 ﻿using BehaviorTree;
 using HarmonyLib;
 using JumpKing.Player;
+using System.Diagnostics;
 
 namespace JumpKingLastJumpValue.Models
 {
