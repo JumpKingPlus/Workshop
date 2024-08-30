@@ -24,7 +24,8 @@ Here you can find the porting status of all the JumpKingPlus mods on the Jump Ki
 |[Disable location intro](https://github.com/gitAdrianK/LessLocationText)|Disables the text showing the new location|Yes|[Yes](https://steamcommunity.com/sharedfiles/filedetails/?id=3267680999)|
 |Easter eggs|🥚|Yes|No & won't be ported (Reason: not worth it)|
 
-If you have an enhancement that **originated from JK+ and it's currently missing**, [join the Discord and leave your request](https://discord.gg/dUk9FPDNVq).
+~~If you have an enhancement that **originated from JK+ and it's currently missing**, [join the Discord and leave your request](https://discord.gg/dUk9FPDNVq).~~
+<br>All features have been ported.
 
 ---
 
