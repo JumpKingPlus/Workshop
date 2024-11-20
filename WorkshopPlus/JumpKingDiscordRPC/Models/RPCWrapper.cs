@@ -20,6 +20,8 @@ using System.Reflection.Emit;
 using JumpKingDiscordRPC.Extensions;
 using JumpKingDiscordRPC.Models;
 using JumpKingDiscordRPC;
+using Steamworks;
+using JumpKing.Workshop;
 
 namespace JumpKingDiscordRPC.Models
 {
@@ -29,6 +31,8 @@ namespace JumpKingDiscordRPC.Models
         internal DiscordRpcClient Client { get; private set; }
         private RichPresence RichPresence { get; set; }
         private System.Timers.Timer timer;
+
+        private bool customImage = false;
 
         internal bool IsInGameLoop { get; set; } = false;
 
@@ -155,6 +159,10 @@ namespace JumpKingDiscordRPC.Models
             Update();
         }
 
+        internal void SetFallbackImage()
+        {
+            customImage = true;
+        }
 
         public void Update()
         {
@@ -234,9 +242,21 @@ namespace JumpKingDiscordRPC.Models
             var location = GetLocation(isCustomLevel);
             var locationName = location.Name.TryGetResource();
 
-            // large image (URLs work!) "https://phoenixx.design/content/images/thex-white.png"
-            presence.Assets.LargeImageKey = location.ImageKey ?? "unknown";
-            presence.Assets.LargeImageText = locationName;
+            if (Game1.instance.contentManager.root != null && customImage)
+            {
+                // todo: remember 256b limit!
+                // large image (URLs work!) "https://phoenixx.design/content/images/thex-white.png"
+                var id = Game1.instance.contentManager.level.ID;
+                if (SteamPreviewGrabber.PreviewDictionary.ContainsKey(id))
+                {
+                    presence.Assets.LargeImageKey = SteamPreviewGrabber.PreviewDictionary[id];
+                    presence.Assets.LargeImageText = GetLevelName();
+                }
+            } else
+            {
+                presence.Assets.LargeImageKey = location.ImageKey ?? "unknown";
+                presence.Assets.LargeImageText = locationName;
+            }
 
 
             // switch for each RPC type

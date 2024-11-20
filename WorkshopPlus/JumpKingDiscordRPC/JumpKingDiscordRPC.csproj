@@ -68,10 +68,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ERPCPresets.cs" />
+    <Compile Include="ERPCPreview.cs" />
     <Compile Include="Menu\PresetOption.cs" />
     <Compile Include="Menu\ToggleDiscordRPC.cs" />
     <Compile Include="Models\FixedJKLocations.cs" />
     <Compile Include="Extensions\LanguageJKExtensions.cs" />
+    <Compile Include="Models\SteamPreviewGrabber.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

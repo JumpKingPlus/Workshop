@@ -11,6 +11,8 @@ using System.Reflection;
 using System.ComponentModel;
 using JumpKingDiscordRPC.Menu;
 using JumpKing.PauseMenu;
+using System.Text.RegularExpressions;
+using JumpKing;
 
 namespace JumpKingDiscordRPC
 {
@@ -19,6 +21,10 @@ namespace JumpKingDiscordRPC
     {
         public const string IDENTIFIER = "Phoenixx19.JumpKingDiscordRPC";
         const string HARMONY_IDENTIFIER = "Phoenixx19.JumpKingDiscordRPC.Harmony";
+
+        const string FLAG_REGEX = "^ShowPreviewBy=(None|Location|Screen)";
+        internal static Regex PreviewImageRegEx = new Regex(FLAG_REGEX);
+
         const string SETTINGS_FILE = "Phoenixx19.JumpKingDiscordRPC.Settings.xml";
 
         internal static string AssemblyPath { get; set; }
@@ -57,6 +63,7 @@ namespace JumpKingDiscordRPC
             var harmony = new Harmony(HARMONY_IDENTIFIER);
 
             Client = new RPCWrapper(harmony);
+            new SteamPreviewGrabber(harmony);
         }
 
         /// <summary>
@@ -75,6 +82,54 @@ namespace JumpKingDiscordRPC
         public static void OnLevelStart()
         {
             Client.IsInGameLoop = true;
+
+            // custom images?
+            if (HasImageTag(out ERPCPreview preview))
+            {
+                //
+                SetImageTags(preview);
+                return;
+            }
+
+            SetImageTags(ERPCPreview.Fallback);
+        }
+
+        private static void SetImageTags(ERPCPreview fallback)
+        {
+            Client.SetFallbackImage();
+        }
+
+        private static bool HasImageTag(out ERPCPreview imagePreviewType)
+        {
+            imagePreviewType = ERPCPreview.None;
+
+            // nre
+            if (!(Game1.instance.contentManager?.level?.Info.Tags is string[] tags))
+            {
+                return false;
+            }
+            foreach (string tag in tags)
+            {
+                // not found... yet
+                if (!PreviewImageRegEx.IsMatch(tag))
+                {
+                    continue;
+                }
+
+                // found it??
+                string[] strings = tag.Split('=');
+                if (strings.Length != 2 || !Enum.TryParse(strings[1], out imagePreviewType))
+                {
+                    // no good
+                    continue;
+                }
+
+                // found it!
+                return true;
+            }
+
+            // well, it tried I guess
+            return false;
         }
 
         /// <summary>
