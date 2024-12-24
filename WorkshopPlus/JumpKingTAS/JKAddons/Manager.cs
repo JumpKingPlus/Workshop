@@ -233,7 +233,7 @@ namespace JumpKingTAS
         {
             bool dpadUp = padState.DPad.Up == ButtonState.Pressed || (IsKeyDown(Keys.OemCloseBrackets) && !IsKeyDown(Keys.RightControl));
             bool dpadDown = padState.DPad.Down == ButtonState.Pressed || (IsKeyDown(Keys.OemOpenBrackets) && !IsKeyDown(Keys.RightControl));
-            bool leftStick = padState.Buttons.LeftStick == ButtonState.Pressed;
+            bool leftStick = padState.Buttons.LeftStick == ButtonState.Pressed || (IsKeyDown(Keys.RightShift) && !IsKeyDown(Keys.RightControl));
 
             if (HasFlag(state, State.Enable))
             {
@@ -284,9 +284,14 @@ namespace JumpKingTAS
                         controller.ReloadPlayback();
                     }
                 }
-                else if (HasFlag(state, State.FrameStep) && padState.ThumbSticks.Right.X < -0.1)
+                else if (HasFlag(state, State.FrameStep) && padState.ThumbSticks.Right.X < -0.1 || (IsKeyDown(Keys.RightAlt) && IsKeyDown(Keys.RightControl)))
                 {
                     float rStick = padState.ThumbSticks.Right.X;
+                    if (rStick > -0.1f)
+                    {
+                        rStick = -0.9f;
+                    }
+
                     FrameStepCooldown += (int)((rStick + 0.1) * 80f);
                     if (FrameStepCooldown <= 0)
                     {
