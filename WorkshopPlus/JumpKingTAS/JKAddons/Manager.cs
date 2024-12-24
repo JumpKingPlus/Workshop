@@ -1,4 +1,4 @@
-﻿using JumpKing.Controller;
+using JumpKing.Controller;
 using JumpKing.GameManager;
 using JumpKing.Player;
 using JumpKing;
@@ -151,7 +151,7 @@ namespace JumpKingTAS
                     {
                         saves.Add(new FrameState(GameLoop.m_player));
                     }
-                    else
+                    else if(controller.CurrentFrame-1>=0)
                     {
                         saves[controller.CurrentFrame - 1].SetValues(GameLoop.m_player);
                     }
