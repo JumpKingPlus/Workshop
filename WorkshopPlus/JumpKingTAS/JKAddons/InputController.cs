@@ -112,7 +112,9 @@ namespace JumpKingTAS {
 					Current = inputs[++inputIndex];
 					frameToNext += Current.Frames;
 				}
-
+				// CAUTION: CurrentFrame increases after update.
+				// It is zero-indexed before playback 
+				// but one-indexed afterward (on CurrentInputFrame).
 				CurrentFrame++;
 			}
 		}
@@ -133,20 +135,26 @@ namespace JumpKingTAS {
 			}
 		}
 		public PadState GetPressed() {
-			InputRecord previous = Previous;
-			if (previous == null) {
-				return GetPadState();
-			} else {
-				return new PadState() {
-					up = !previous.HasActions(Actions.Up) && Current.HasActions(Actions.Up),
-					down = !previous.HasActions(Actions.Down) && Current.HasActions(Actions.Down),
-					left = !previous.HasActions(Actions.Left) && Current.HasActions(Actions.Left),
-					right = !previous.HasActions(Actions.Right) && Current.HasActions(Actions.Right),
-					jump = !previous.HasActions(Actions.Jump) && Current.HasActions(Actions.Jump),
-					confirm = !previous.HasActions(Actions.Jump) && Current.HasActions(Actions.Jump),
-					cancel = !previous.HasActions(Actions.Cancel) && Current.HasActions(Actions.Cancel),
-					pause = !previous.HasActions(Actions.Pause) && Current.HasActions(Actions.Pause)
-				};
+			// InputController update keypress after PlaybackPlayer()
+			if (CurrentInputFrame == 1) {
+				InputRecord previous = Previous;
+				if (previous == null) {
+					return GetPadState();
+				} else {
+					return new PadState() {
+						up = !previous.HasActions(Actions.Up) && Current.HasActions(Actions.Up),
+						down = !previous.HasActions(Actions.Down) && Current.HasActions(Actions.Down),
+						left = !previous.HasActions(Actions.Left) && Current.HasActions(Actions.Left),
+						right = !previous.HasActions(Actions.Right) && Current.HasActions(Actions.Right),
+						jump = !previous.HasActions(Actions.Jump) && Current.HasActions(Actions.Jump),
+						confirm = !previous.HasActions(Actions.Jump) && Current.HasActions(Actions.Jump),
+						cancel = !previous.HasActions(Actions.Cancel) && Current.HasActions(Actions.Cancel),
+						pause = !previous.HasActions(Actions.Pause) && Current.HasActions(Actions.Pause),
+					};
+				}
+			}
+			else {
+				return new PadState();
 			}
 		}
 		private bool ReadFile() {
