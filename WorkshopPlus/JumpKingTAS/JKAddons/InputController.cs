@@ -130,7 +130,9 @@ namespace JumpKingTAS {
 					jump = Current.HasActions(Actions.Jump),
 					confirm = Current.HasActions(Actions.Jump),
 					cancel = Current.HasActions(Actions.Cancel),
-					pause = Current.HasActions(Actions.Pause)
+					pause = Current.HasActions(Actions.Pause),
+					boots = Current.HasActions(Actions.Boots),
+					snake = Current.HasActions(Actions.Snake)
 				};
 			}
 		}
@@ -150,6 +152,8 @@ namespace JumpKingTAS {
 						confirm = !previous.HasActions(Actions.Jump) && Current.HasActions(Actions.Jump),
 						cancel = !previous.HasActions(Actions.Cancel) && Current.HasActions(Actions.Cancel),
 						pause = !previous.HasActions(Actions.Pause) && Current.HasActions(Actions.Pause),
+						boots = !previous.HasActions(Actions.Boots) && Current.HasActions(Actions.Boots),
+						snake = !previous.HasActions(Actions.Snake) && Current.HasActions(Actions.Snake),
 					};
 				}
 			}
