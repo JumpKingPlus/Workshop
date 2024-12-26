@@ -86,6 +86,8 @@ namespace JumpKingTAS
                 PlayerStatus = null;
             }
         }
+        // Main update method which is called by Game1.update()
+        // and excuted before JumpGame.Update()
         public static void UpdateInputs()
         {
             UpdatePlayerInfo();
@@ -119,19 +121,10 @@ namespace JumpKingTAS
                         if (controller.Current.HasActions(Actions.Reset))
                         {
                             var m_all_time_stats = AchievementManager.Field("m_all_time_stats").GetValue<PlayerStats>();
-                            m_all_time_stats.attempts = 1;
-                            m_all_time_stats.falls = 0;
-                            m_all_time_stats.jumps = 0;
-                            m_all_time_stats.session = 0;
-                            m_all_time_stats._ticks = 0;
-                            AchievementManager.Field("m_all_time_stats").SetValue(m_all_time_stats);
 
                             var m_snapshot = AchievementManager.Field("m_snapshot").GetValue<PlayerStats>();
-                            m_snapshot.attempts = 1;
-                            m_snapshot.falls = 0;
-                            m_snapshot.jumps = 0;
-                            m_snapshot.session = 0;
-                            m_snapshot._ticks = 2;
+                            // Same as GameLoop starting frame (00:00:00.017 on in-game timer)
+                            m_snapshot._ticks = m_all_time_stats._ticks;
                             AchievementManager.Field("m_snapshot").SetValue(m_snapshot);
                         }
                         else
