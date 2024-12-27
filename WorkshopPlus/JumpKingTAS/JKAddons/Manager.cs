@@ -124,8 +124,9 @@ namespace JumpKingTAS
 
                             var m_snapshot = AchievementManager.Field("m_snapshot").GetValue<PlayerStats>();
                             // Same as GameLoop starting frame (00:00:00.017 on in-game timer)
-                            m_snapshot._ticks = m_all_time_stats._ticks;
-                            AchievementManager.Field("m_snapshot").SetValue(m_snapshot);
+                            // reset all time ticks bc FrameState record all time ticks but not snapshot ticks
+                            m_all_time_stats._ticks = m_snapshot._ticks;
+                            AchievementManager.Field("m_all_time_stats").SetValue(m_all_time_stats);
                         }
                         else
                         if (controller.Current.HasActions(Actions.State) && GameLoop.m_player != null)
