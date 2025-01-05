@@ -1,4 +1,4 @@
-﻿using JumpKing.Controller;
+using JumpKing.Controller;
 using JumpKing.GameManager;
 using JumpKing.Player;
 using JumpKing;
@@ -86,6 +86,8 @@ namespace JumpKingTAS
                 PlayerStatus = null;
             }
         }
+        // Main update method which is called by Game1.update()
+        // and excuted before JumpGame.Update()
         public static void UpdateInputs()
         {
             UpdatePlayerInfo();
@@ -119,20 +121,12 @@ namespace JumpKingTAS
                         if (controller.Current.HasActions(Actions.Reset))
                         {
                             var m_all_time_stats = AchievementManager.Field("m_all_time_stats").GetValue<PlayerStats>();
-                            m_all_time_stats.attempts = 1;
-                            m_all_time_stats.falls = 0;
-                            m_all_time_stats.jumps = 0;
-                            m_all_time_stats.session = 0;
-                            m_all_time_stats._ticks = 0;
-                            AchievementManager.Field("m_all_time_stats").SetValue(m_all_time_stats);
 
                             var m_snapshot = AchievementManager.Field("m_snapshot").GetValue<PlayerStats>();
-                            m_snapshot.attempts = 1;
-                            m_snapshot.falls = 0;
-                            m_snapshot.jumps = 0;
-                            m_snapshot.session = 0;
-                            m_snapshot._ticks = 2;
-                            AchievementManager.Field("m_snapshot").SetValue(m_snapshot);
+                            // Same as GameLoop starting frame (00:00:00.017 on in-game timer)
+                            // reset all time ticks bc FrameState record all time ticks but not snapshot ticks
+                            m_all_time_stats._ticks = m_snapshot._ticks;
+                            AchievementManager.Field("m_all_time_stats").SetValue(m_all_time_stats);
                         }
                         else
                         if (controller.Current.HasActions(Actions.State) && GameLoop.m_player != null)
@@ -151,7 +145,7 @@ namespace JumpKingTAS
                     {
                         saves.Add(new FrameState(GameLoop.m_player));
                     }
-                    else
+                    else if(controller.CurrentFrame-1>=0)
                     {
                         saves[controller.CurrentFrame - 1].SetValues(GameLoop.m_player);
                     }
@@ -233,7 +227,7 @@ namespace JumpKingTAS
         {
             bool dpadUp = padState.DPad.Up == ButtonState.Pressed || (IsKeyDown(Keys.OemCloseBrackets) && !IsKeyDown(Keys.RightControl));
             bool dpadDown = padState.DPad.Down == ButtonState.Pressed || (IsKeyDown(Keys.OemOpenBrackets) && !IsKeyDown(Keys.RightControl));
-            bool leftStick = padState.Buttons.LeftStick == ButtonState.Pressed;
+            bool leftStick = padState.Buttons.LeftStick == ButtonState.Pressed || (IsKeyDown(Keys.RightShift) && !IsKeyDown(Keys.RightControl));
 
             if (HasFlag(state, State.Enable))
             {
@@ -284,9 +278,14 @@ namespace JumpKingTAS
                         controller.ReloadPlayback();
                     }
                 }
-                else if (HasFlag(state, State.FrameStep) && padState.ThumbSticks.Right.X < -0.1)
+                else if (HasFlag(state, State.FrameStep) && padState.ThumbSticks.Right.X < -0.1 || (IsKeyDown(Keys.RightAlt) && IsKeyDown(Keys.RightControl)))
                 {
                     float rStick = padState.ThumbSticks.Right.X;
+                    if (rStick > -0.1f)
+                    {
+                        rStick = -0.9f;
+                    }
+
                     FrameStepCooldown += (int)((rStick + 0.1) * 80f);
                     if (FrameStepCooldown <= 0)
                     {

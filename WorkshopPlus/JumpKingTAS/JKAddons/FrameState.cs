@@ -86,6 +86,13 @@ namespace JumpKingTAS
 			var stats = tAchievements.Field("m_all_time_stats").GetValue<PlayerStats>();
 			stats._ticks = Time;
 			tAchievements.Field("m_all_time_stats").SetValue(stats);
+
+			// while stepbacking with giant boots on
+			// there has a chance to disable body component on air
+			// then player can't move anymore
+			if (!OnGround && !body.Enabled) {
+				body.Enabled = true;
+			}
         }
 	}
 }

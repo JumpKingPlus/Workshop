@@ -5,14 +5,17 @@ namespace TASStudio.Entities {
 	public enum Actions {
 		None,
 		Left = 1,
-		Right = 2,
-		Up = 4,
-		Down = 8,
-		Jump = 16,
-		Pause = 32,
-		Cancel = 64,
-		Reset = 128,
-		State = 256
+		Right = 1<<1,
+		Up = 1<<2,
+		Down = 1<<3,
+		Jump = 1<<4,
+		Pause = 1<<5,
+		Cancel = 1<<6,
+		Reset = 1<<7,
+		State = 1<<8,
+		Boots = 1<<9,
+		Snake = 1<<10,
+
 	}
 	public class InputRecord {
 		public static char Delimiter = ',';
@@ -68,6 +71,8 @@ namespace TASStudio.Entities {
 					case 'P': Actions ^= Actions.Pause; break;
 					case 'C': Actions ^= Actions.Cancel; break;
 					case 'X': Actions ^= Actions.Reset; break;
+					case 'B': Actions ^= Actions.Boots; break;
+					case 'S': Actions ^= Actions.Snake; break;
 				}
 
 				index++;
@@ -122,6 +127,8 @@ namespace TASStudio.Entities {
 			if (HasActions(Actions.Pause)) { sb.Append(",P"); }
 			if (HasActions(Actions.Cancel)) { sb.Append(",C"); }
 			if (HasActions(Actions.Reset)) { sb.Append(",X"); }
+			if (HasActions(Actions.Boots)) { sb.Append(",B"); }
+			if (HasActions(Actions.Snake)) { sb.Append(",S"); }
 			if (HasActions(Actions.State)) { sb.Append($"@{PosX},{PosY},{Direction}"); }
 			return sb.ToString();
 		}
