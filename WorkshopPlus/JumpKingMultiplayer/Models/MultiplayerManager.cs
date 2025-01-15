@@ -165,8 +165,16 @@ namespace JumpKingMultiplayer.Models
                 if (SteamNetworking.ReadP2PPacket(buffer, size, out _, out CSteamID remoteId))
                 {
                     var messageStr = System.Text.Encoding.ASCII.GetString(buffer);
-                    var message = Parser.FromString<TrackData>(messageStr);
-                    UpdatePlayerState(remoteId, message);
+                    try
+                    {
+                        var message = Parser.FromString<TrackData>(messageStr);
+                        UpdatePlayerState(remoteId, message);
+
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException($"messageStr: {messageStr} \n remoteId: {remoteId} \n buffer: {buffer}");
+                    }
 
                     // idk how to get the ping
                     //SteamNetworkingIdentity id = new SteamNetworkingIdentity();
