@@ -10,9 +10,28 @@ namespace HitboxResizer.Patches
     [HarmonyPatch(typeof(PlayerEntity), "Draw")]
     public class PrefixPlayerEntityDraw
     {
+        #region Properties
+        /// <summary>
+        /// <c>true</c> if we use the HitboxResizer, <c>false</c> if we don't.
+        /// </summary>
         public static bool IsCustomHitbox { get; set; } = false;
+
+        /// <summary>
+        /// Player width size.
+        /// </summary>
         public static int Width { get; set; } = PlayerValues.PLAYER_WIDTH;
+
+        /// <summary>
+        /// Player height size.
+        /// </summary>
         public static int Height { get; set; } = PlayerValues.PLAYER_HEIGHT;
+        #endregion
+
+        // TODO: Rewrite this as a Transpiler so we have shared compatibility with JeFi's mod to mention his message:
+        //  "The problem is, in our mods we both patch PlayerEntity.Draw(). In my UpsideDownCore
+        //  (https://github.com/JeFi-314/JumpKing-UpsideDownCore/blob/main/UpsideDownCore/Patching/PlayerEntity.cs),
+        //  i used transpiler to directly change original method body;
+        //  but in hitbox resizer, it used prefix patch to skip method body."
 
         public static bool Prefix(PlayerEntity __instance)
         {

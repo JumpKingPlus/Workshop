@@ -3,6 +3,7 @@ using HitboxResizer.Patches;
 using JumpKing;
 using JumpKing.GameManager;
 using JumpKing.Mods;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -41,6 +42,7 @@ namespace HitboxResizer
             PrefixPlayerEntityDraw.IsCustomHitbox = HasAnyHitboxResizerTags(
                 out var width,
                 out var height);
+
             if (PrefixPlayerEntityDraw.IsCustomHitbox)
             {
                 SetHitbox(width, height);
@@ -67,21 +69,29 @@ namespace HitboxResizer
             }
 
             bool isCustom = false;
+
             foreach (string tag in tags)
             {
                 var match = HitboxResizerRegEx.Match(tag);
+
                 // no match found! (most probably its a different flag)
                 if (!match.Success)
                 {
                     continue;
                 }
+
                 isCustom = true;
+                
                 // If the regex matches we have captured three groups.
                 // groups[0]: Full tag.
                 // groups[1]: Either Width or Height.
                 // groups[2]: New size.
                 var groups = match.Groups;
+
+                // I thought of changing this to int.TryParse
+                // but we established from the Regex that the value will be a number.
                 var value = int.Parse(groups[2].Value);
+
                 if (groups[1].Value == "Width")
                 {
                     width = value;
@@ -91,6 +101,7 @@ namespace HitboxResizer
                     height = value;
                 }
             }
+
             return isCustom;
         }
 
