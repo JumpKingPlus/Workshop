@@ -4,12 +4,10 @@ using JumpKing.PauseMenu;
 using JumpKingJumpArch.Menu;
 using JumpKingJumpArch.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace JumpKingJumpArch
 {
@@ -19,6 +17,8 @@ namespace JumpKingJumpArch
         const string IDENTIFIER = "Phoenixx19.JumpKingJumpArch";
         const string HARMONY_IDENTIFIER = "Phoenixx19.JumpKingJumpArch.Harmony";
         const string SETTINGS_FILE = "Phoenixx19.JumpKingJumpArch.Settings.xml";
+
+        public const int LIMIT = 75;
 
         public static string AssemblyPath { get; set; }
         public static Preferences Preferences { get; private set; }
@@ -52,7 +52,7 @@ namespace JumpKingJumpArch
             Preferences.PropertyChanged += SaveSettingsOnFile;
 
             // setup harmony
-            var harmony = new Harmony(HARMONY_IDENTIFIER);
+            Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
 
             // patching on each class (is better than attributes)
             new JumpChargeCalc(harmony);
@@ -76,33 +76,6 @@ namespace JumpKingJumpArch
             {
                 Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
             }
-        }
-
-        /// <summary>
-        /// Called by Jump King when the level unloads
-        /// </summary>
-        [OnLevelUnload]
-        public static void OnLevelUnload()
-        {
-            // Your code here
-        }
-
-        /// <summary>
-        /// Called by Jump King when the Level Starts
-        /// </summary>
-        [OnLevelStart]
-        public static void OnLevelStart()
-        {
-            // Your code here
-        }
-
-        /// <summary>
-        /// Called by Jump King when the Level Ends
-        /// </summary>
-        [OnLevelEnd]
-        public static void OnLevelEnd()
-        {
-            // Your code here
         }
     }
 }

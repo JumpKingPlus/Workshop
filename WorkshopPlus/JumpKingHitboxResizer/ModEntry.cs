@@ -79,7 +79,7 @@ namespace HitboxResizer
                 // groups[2]: New size.
                 var groups = match.Groups;
                 var value = int.Parse(groups[2].Value);
-                if (groups[0].Value == "Width")
+                if (groups[1].Value == "Width")
                 {
                     width = value;
                 }
