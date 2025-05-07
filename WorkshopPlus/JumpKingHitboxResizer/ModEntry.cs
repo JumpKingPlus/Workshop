@@ -37,14 +37,7 @@ namespace HitboxResizer
         [OnLevelStart]
         public static void OnLevelStart()
         {
-            PrefixPlayerEntityDraw.IsCustomHitbox = false;
-            var tags = Game1.instance.contentManager?.level?.Info.Tags;
-            if (tags == null)
-            {
-                return;
-            }
             PrefixPlayerEntityDraw.IsCustomHitbox = HasAnyHitboxResizerTags(
-                tags,
                 out var width,
                 out var height);
             if (PrefixPlayerEntityDraw.IsCustomHitbox)
@@ -59,11 +52,16 @@ namespace HitboxResizer
         /// <param name="width">Vanilla width or tag specified width.</param>
         /// <param name="height">Vanilla height or tag specified heigth.</param>
         /// <returns>True if at least one resize tag has been found, false otherwise.</returns>
-        private static bool HasAnyHitboxResizerTags(string[] tags, out int width, out int height)
+        private static bool HasAnyHitboxResizerTags(out int width, out int height)
         {
             // fallback values
             width = PlayerValues.PLAYER_WIDTH;
             height = PlayerValues.PLAYER_HEIGHT;
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            if (tags == null)
+            {
+                return false;
+            }
 
             var isCustom = false;
             foreach (string tag in tags)
