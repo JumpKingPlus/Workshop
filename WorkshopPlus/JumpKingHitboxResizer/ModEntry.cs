@@ -1,15 +1,10 @@
 ﻿using HarmonyLib;
+using HitboxResizer.Patches;
 using JumpKing;
 using JumpKing.GameManager;
-using JumpKing.Level;
 using JumpKing.Mods;
-using JumpKing.Player;
-using JumpKing.Workshop;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Diagnostics;
-using System.Text;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace HitboxResizer
@@ -20,11 +15,8 @@ namespace HitboxResizer
         const string IDENTIFIER = "Phoenixx19.HitboxResizer";
         const string HARMONY_IDENTIFIER = "Phoenixx19.HitboxResizer.Harmony";
 
-        const string FLAG_REGEX = "^KingCustomHitbox(Width|Height)=[0-9]+$";
+        const string FLAG_REGEX = "^KingCustomHitbox(Width|Height)=([0-9]+)$";
         internal static Regex HitboxResizerRegEx = new Regex(FLAG_REGEX);
-
-        public static int Width { get; set; } = PlayerValues.PLAYER_WIDTH;
-        public static int Height { get; set; } = PlayerValues.PLAYER_HEIGHT;
 
         /// <summary>
         /// Called by Jump King before the level loads
@@ -33,49 +25,11 @@ namespace HitboxResizer
         public static void BeforeLevelLoad()
         {
             var harmony = new Harmony(HARMONY_IDENTIFIER);
-
 #if DEBUG
             Debugger.Launch();
             Harmony.DEBUG = true;
 #endif
-
-            harmony.Patch(
-                AccessTools.Method(typeof(PlayerEntity), "Draw"),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(ModEntry), nameof(DrawOverride)))
-            );
-        }
-
-        static bool DrawOverride(PlayerEntity __instance)
-        {
-            var center = __instance.m_body.Position + new Vector2(Width / 2, Height);
-
-            var tInstance = Traverse.Create(__instance);
-            tInstance.Field("m_sprite").GetValue<Sprite>()
-                .Draw(
-                    Camera.TransformVector2(center), 
-                    tInstance.Field("m_flip").GetValue<SpriteEffects>()
-                );
-
-            if (LevelScreen.DrawDebug)
-            {
-                Game1.spriteBatch.Draw(
-                    Game1.instance.contentManager.Pixel.texture,
-                    new Rectangle(
-                        Camera.TransformVector2(new Vector2(__instance.m_body.Position.X, __instance.m_body.Position.Y)).ToPoint(),
-                        new Vector2(Width, Height).ToPoint()
-                    ),
-                    new Color(Color.DarkKhaki, 0.66f)
-                );
-
-                Game1.spriteBatch.Draw(
-                    Game1.instance.contentManager.Pixel.texture,
-                    new Rectangle(
-                        Camera.TransformVector2(__instance.m_body.GetHitbox().Center.ToVector2()).ToPoint(), new Point(1)
-                    ),
-                    Color.Red
-                );
-            }
-            return false;
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
@@ -85,75 +39,80 @@ namespace HitboxResizer
         public static void OnLevelStart()
         {
             // custom hitboxes time
-            if (HasAnyHitboxResizerTags(out int width, out int height))
+            PrefixPlayerEntityDraw.IsCustomHitbox = HasAnyHitboxResizerTags(
+                out var width,
+                out var height);
+
+            if (PrefixPlayerEntityDraw.IsCustomHitbox)
             {
                 SetHitbox(width, height);
-                return;
             }
-
-            // read default hitboxes
-            SetHitbox();
         }
 
+        /// <summary>
+        /// Checks the level tags for the occurence of our tag.
+        /// </summary>
+        /// <param name="width">Vanilla width or tag specified width.</param>
+        /// <param name="height">Vanilla height or tag specified heigth.</param>
+        /// <returns>True if at least one resize tag has been found, false otherwise.</returns>
         private static bool HasAnyHitboxResizerTags(out int width, out int height)
         {
             // fallback values
             width = PlayerValues.PLAYER_WIDTH;
             height = PlayerValues.PLAYER_HEIGHT;
-            bool isDefault = true;
 
             // null check
-            if (Game1.instance.contentManager?.level?.Info.Tags is null)
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            if (tags is null)
             {
-                return !isDefault;
+                return false;
             }
 
-            foreach (string item in Game1.instance.contentManager.level.Info.Tags)
+            bool isCustom = false;
+
+            foreach (string tag in tags)
             {
+                var match = HitboxResizerRegEx.Match(tag);
+
                 // no match found! (most probably its a different flag)
-                if (!HitboxResizerRegEx.IsMatch(item))
+                if (!match.Success)
                 {
                     continue;
                 }
 
-                // KingCustomHitboxWidth=18
-                // dividing it to:
-                // KingCustomHitboxWidth AND 18
-                string[] strings = item.Split('=');
+                isCustom = true;
+                
+                // If the regex matches we have captured three groups.
+                // groups[0]: Full tag.
+                // groups[1]: Either Width or Height.
+                // groups[2]: New size.
+                var groups = match.Groups;
 
-                // this gotta be divided in 2 and it has to be a NUMBER OF SOME SORT
-                if (strings.Length != 2 || !int.TryParse(strings[1], out int value))
-                {
-                    // uh oh
-                    continue;
-                }
+                // I thought of changing this to int.TryParse
+                // but we established from the Regex that the value will be a number.
+                var value = int.Parse(groups[2].Value);
 
-                if (strings[0].Contains("Width"))
+                if (groups[1].Value == "Width")
                 {
-                    // set width
                     width = value;
                 }
-                else if (strings[0].Contains("Height"))
+                else
                 {
-                    // set height
                     height = value;
                 }
-
-                // i gotta return something as a bool for a feedback!
-                isDefault = false;
             }
 
-            return !isDefault;
+            return isCustom;
         }
 
         private static void SetHitbox(int width = PlayerValues.PLAYER_WIDTH, int height = PlayerValues.PLAYER_HEIGHT)
         {
-            Width = width;
-            Height = height;
+            PrefixPlayerEntityDraw.Width = width;
+            PrefixPlayerEntityDraw.Height = height;
 
             var tBody = Traverse.Create(GameLoop.m_player.m_body);
-            tBody.Field("m_width").SetValue(Width);
-            tBody.Field("m_height").SetValue(Height);
+            tBody.Field("m_width").SetValue(PrefixPlayerEntityDraw.Width);
+            tBody.Field("m_height").SetValue(PrefixPlayerEntityDraw.Height);
         }
     }
 }
