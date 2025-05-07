@@ -27,12 +27,6 @@ namespace HitboxResizer.Patches
         public static int Height { get; set; } = PlayerValues.PLAYER_HEIGHT;
         #endregion
 
-        // TODO: Rewrite this as a Transpiler so we have shared compatibility with JeFi's mod to mention his message:
-        //  "The problem is, in our mods we both patch PlayerEntity.Draw(). In my UpsideDownCore
-        //  (https://github.com/JeFi-314/JumpKing-UpsideDownCore/blob/main/UpsideDownCore/Patching/PlayerEntity.cs),
-        //  i used transpiler to directly change original method body;
-        //  but in hitbox resizer, it used prefix patch to skip method body."
-
         public static bool Prefix(PlayerEntity __instance)
         {
             if (!IsCustomHitbox)
