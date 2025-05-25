@@ -1,25 +1,18 @@
-﻿using HarmonyLib;
+﻿using EntityComponent;
+using HarmonyLib;
 using JumpKing;
-using JumpKing.API;
 using JumpKing.Mods;
+using JumpKing.PauseMenu;
 using JumpKing.PauseMenu.BT;
+using JumpKing.Player;
 using JumpKing.XnaWrappers;
+using JumpKingSaveStates.Menu;
 using JumpKingSaveStates.Models;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using JumpKing.PauseMenu;
-using EntityComponent;
-using JumpKing.Player;
-using static JumpKing.JKContentManager.Audio;
-using JumpKingSaveStates.Menu;
 
 namespace JumpKingSaveStates
 {
@@ -42,6 +35,13 @@ namespace JumpKingSaveStates
         public static ToggleSavestates Toggle(object factory, GuiFormat format)
         {
             return new ToggleSavestates();
+        }
+
+        [PauseMenuItemSetting]
+        [MainMenuItemSetting]
+        public static ToggleIncludeTicks ToggleTicks(object factory, GuiFormat format)
+        {
+            return new ToggleIncludeTicks();
         }
 
         [PauseMenuItemSetting]

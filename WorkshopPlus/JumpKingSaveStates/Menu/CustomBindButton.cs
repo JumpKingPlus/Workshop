@@ -1,17 +1,8 @@
 ﻿using BehaviorTree;
 using EntityComponent;
 using EntityComponent.BT;
-using HarmonyLib;
 using JumpKing.Controller;
-using JumpKing.PauseMenu.BT.Actions.BindController;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingSaveStates.Menu
 {

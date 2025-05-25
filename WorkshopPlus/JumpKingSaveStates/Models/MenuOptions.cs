@@ -1,29 +1,22 @@
 ﻿using BehaviorTree;
-using HarmonyLib;
-using JumpKing.PauseMenu.BT;
-using JumpKing.PauseMenu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using IDrawable = JumpKing.Util.IDrawable;
-using System.Threading.Tasks;
-using EntityComponent.BT;
-using JumpKing.Controller;
-using JumpKing.MiscEntities.WorldItems.Inventory;
-using JumpKing.MiscEntities.WorldItems;
-using JumpKing.PauseMenu.BT.Actions.BindController;
-using JumpKing;
-using Microsoft.Xna.Framework.Graphics;
-using LanguageJK;
 using EntityComponent;
+using EntityComponent.BT;
+using HarmonyLib;
+using JumpKing;
+using JumpKing.PauseMenu;
+using JumpKing.PauseMenu.BT;
+using JumpKing.PauseMenu.BT.Actions;
+using JumpKing.PauseMenu.BT.Actions.BindController;
+using JumpKing.SaveThread;
 using JumpKing.Util;
 using JumpKingSaveStates.Menu;
-using JumpKing.PauseMenu.BT.Actions;
-using Microsoft.Xna.Framework;
-using JumpKing.SaveThread;
-using JumpKing.GameManager;
 using JumpKingSaveStates.Nodes;
+using LanguageJK;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Linq;
+using IDrawable = JumpKing.Util.IDrawable;
 
 namespace JumpKingSaveStates.Models
 {
@@ -141,22 +134,22 @@ namespace JumpKingSaveStates.Models
             IBTnode p_child2 = MakeBindController(1, _entity);
             menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_INPUT_BIND_PRIMARY, p_child, menuFontSmall));
             menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_INPUT_BIND_SECONDARY, p_child2, menuFontSmall));
-            
+
             BTsequencor btsequencor = new BTsequencor();
             btsequencor.AddChild(new CustomBindDefault(_entity));
             btsequencor.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
             menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_INPUT_DEFAULT, btsequencor, menuFontSmall));
-            
+
             BTsequencor btsequencor2 = new BTsequencor();
             btsequencor2.AddChild(new CustomSaveBind(_entity));
             btsequencor2.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
             menuSelector.AddChild<SaveNotifier>(new SaveNotifier(_entity, new TextButton(language.MENUFACTORY_SAVE, btsequencor2, menuFontSmall)));
-            
+
             //BTsequencor btsequencor3 = new BTsequencor();
             //btsequencor3.AddChild(new LoadBind(_entity));
             //btsequencor3.AddChild(new SetBBKeyNode<bool>(_entity, "BBKEY_UNSAVED_CHANGED", true));
             //menuSelector.AddChild<SaveNotifier>(new SaveNotifier(_entity, new TextButton(language.MENUFACTORY_LOAD, btsequencor3, menuFontSmall)));
-            
+
             menuSelector.Initialize(true);
             menuSelector.GetBounds();
 
@@ -177,7 +170,7 @@ namespace JumpKingSaveStates.Models
             var drawables = MenuFactoryDrawables;
             drawables.Insert(count, displayFrame);
             MenuFactoryDrawables = drawables;
-            
+
             btsimultaneous.AddChild(new StaticNode(displayFrame, BTresult.Failure));
             return btsimultaneous;
         }
