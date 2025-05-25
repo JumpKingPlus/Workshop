@@ -43,8 +43,9 @@ namespace JumpKingSaveStates
                 behaviourContext.BodyComp.Position.Y = saveState.Y;
                 behaviourContext.BodyComp.Velocity = Vector2.Zero;
                 Camera.UpdateCamera(behaviourContext.BodyComp.GetHitbox().Center);
-                // Game ticks
-                if (JumpKingSaveStates.Preferences.IncludeTicks)
+                // Game ticks, don't set if ticks are the default 0 though.
+                if (JumpKingSaveStates.Preferences.IncludeTicks
+                    && saveState.Ticks > 0)
                 {
                     // Player stats are a struct, so its copy and we need to reassign the copy.
                     var stats = TraverseAM.Field("m_all_time_stats").GetValue<PlayerStats>();

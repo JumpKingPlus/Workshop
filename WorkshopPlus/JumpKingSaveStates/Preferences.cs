@@ -130,7 +130,7 @@ namespace JumpKingSaveStates
         public float Y;
         public int Ticks;
 
-        public static SaveState Default => new SaveState(231, 302, 1);
+        public static SaveState Default => new SaveState(231, 302, 0);
     }
 
     public struct Binding
