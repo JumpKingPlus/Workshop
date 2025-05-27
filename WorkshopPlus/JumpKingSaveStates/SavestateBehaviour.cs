@@ -26,10 +26,19 @@ namespace JumpKingSaveStates
             }
             if (state.savePos)
             {
+                var allTimeTicks = TraverseAM
+                        .Field("m_all_time_stats")
+                        .GetValue<PlayerStats>()
+                        ._ticks;
+                var snapshotTicks = TraverseAM
+                            .Field("m_snapshot")
+                            .GetValue<PlayerStats>()
+                            ._ticks;
+                var ticks = allTimeTicks - snapshotTicks;
                 if (JumpKingSaveStates.Preferences.TryAddSaveState(
                     behaviourContext.BodyComp.Position.X,
                     behaviourContext.BodyComp.Position.Y,
-                    TraverseAM.Field("m_all_time_stats").GetValue<PlayerStats>()._ticks
+                    ticks
                 ))
                 {
                     Game1.instance.contentManager.audio.menu.MenuFail.Play();
@@ -47,10 +56,15 @@ namespace JumpKingSaveStates
                 if (JumpKingSaveStates.Preferences.IncludeTicks
                     && saveState.Ticks > 0)
                 {
-                    // Player stats are a struct, so its copy and we need to reassign the copy.
-                    var stats = TraverseAM.Field("m_all_time_stats").GetValue<PlayerStats>();
-                    stats._ticks = saveState.Ticks;
-                    TraverseAM.Field("m_all_time_stats").SetValue(stats);
+                    var allTimeTicks = TraverseAM
+                        .Field("m_all_time_stats")
+                        .GetValue<PlayerStats>()
+                        ._ticks;
+                    var snapshot = TraverseAM
+                                .Field("m_snapshot");
+                    var stats = snapshot.GetValue<PlayerStats>();
+                    stats._ticks = allTimeTicks - saveState.Ticks;
+                    snapshot.SetValue(stats);
                 }
                 Game1.instance.contentManager.audio.menu.Select.Play();
             }

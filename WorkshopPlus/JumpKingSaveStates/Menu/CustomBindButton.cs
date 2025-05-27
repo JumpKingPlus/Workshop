@@ -8,8 +8,8 @@ namespace JumpKingSaveStates.Menu
 {
     public class CustomBindButton : EntityBTNode
     {
-        private EBinding m_button;
-        private int m_order_index;
+        private readonly EBinding m_button;
+        private readonly int m_order_index;
 
         public CustomBindButton(Entity p_entity, EBinding p_button, int p_order_index) : base(p_entity)
         {

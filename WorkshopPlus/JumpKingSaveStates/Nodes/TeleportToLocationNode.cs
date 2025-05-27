@@ -7,8 +7,8 @@ namespace JumpKingSaveStates.Nodes
 {
     internal class TeleportToLocationNode : IBTnode
     {
-        private float positionX;
-        private float positionY;
+        private readonly float positionX;
+        private readonly float positionY;
 
         public TeleportToLocationNode(float positionX, float positionY)
         {

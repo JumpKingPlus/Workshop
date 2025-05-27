@@ -12,7 +12,7 @@ namespace JumpKingSaveStates.Menu
 {
     public class CustomBindDisplay : EntityBTNode, IMenuItem, UnSelectable
     {
-        private EBinding m_button;
+        private readonly EBinding m_button;
         private SpriteFont Font => Game1.instance.contentManager.font.MenuFontSmall;
 
         public CustomBindDisplay(Entity p_entity, EBinding p_button)

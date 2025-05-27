@@ -15,7 +15,6 @@ using LanguageJK;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Linq;
 using IDrawable = JumpKing.Util.IDrawable;
 
 namespace JumpKingSaveStates.Models
@@ -28,26 +27,6 @@ namespace JumpKingSaveStates.Models
             get => _drawables.GetValue<List<IDrawable>>();
             set => _drawables.SetValue(value);
         }
-
-        /// <summary>
-        /// Remove return button that most <see cref="MenuSelector"/> adds before returning.
-        /// </summary>
-        /// <param name="__result">Reference to MenuSelector returned.</param>
-        private static void RemoveLastChild(ref MenuSelector __result)
-        {
-            Traverse fieldReference = Traverse.Create(__result).Field("m_children");
-
-            // get
-            List<IBTnode> children = fieldReference.GetValue<IBTnode[]>().ToList();
-
-            // remove last child
-            children[children.Count - 1].OnDispose();
-            children.RemoveAt(children.Count - 1);
-
-            // set
-            fieldReference.SetValue(children.ToArray());
-        }
-
         internal static MenuSelector CreateTeleportList(GuiFormat p_format)
         {
             MenuSelector menuSelector = new MenuSelector(p_format);
@@ -189,8 +168,10 @@ namespace JumpKingSaveStates.Models
             // could be improved
             BindCatchSave p_child = new BindCatchSave(entity);
             CustomBindDefault p_child2 = new CustomBindDefault(entity);
-            MenuSelector menuSelector = new MenuSelector(p_format);
-            menuSelector.AllowEscape = false;
+            MenuSelector menuSelector = new MenuSelector(p_format)
+            {
+                AllowEscape = false
+            };
             MenuSelectorBack p_child3 = new MenuSelectorBack(menuSelector);
             BTsequencor btsequencor = new BTsequencor();
             btsequencor.AddChild(p_child2);
