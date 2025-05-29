@@ -1,19 +1,14 @@
 ﻿using BehaviorTree;
-using JumpKing.GameManager;
 using JumpKing;
+using JumpKing.GameManager;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingSaveStates.Nodes
 {
     internal class TeleportToLocationNode : IBTnode
     {
-        private float positionX;
-        private float positionY;
+        private readonly float positionX;
+        private readonly float positionY;
 
         public TeleportToLocationNode(float positionX, float positionY)
         {

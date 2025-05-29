@@ -1,11 +1,7 @@
 ﻿using HarmonyLib;
 using JumpKing.Controller;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingSaveStates.Models
 {
@@ -74,20 +70,7 @@ namespace JumpKingSaveStates.Models
             };
         }
 
-        private bool IsPressed(int[] pressed, int[] bind)
-        {
-            foreach (int num in pressed)
-            {
-                foreach (int num2 in bind)
-                {
-                    if (num == num2)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        private bool IsPressed(int[] pressed, int[] bind) => pressed.Any(num => bind.Contains(num));
     }
 
     public struct CustomPadState

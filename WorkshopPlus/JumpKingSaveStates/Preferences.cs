@@ -1,6 +1,4 @@
-﻿using JumpKing.Controller;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,7 +13,8 @@ namespace JumpKingSaveStates
         const int MAX_QUEUE_SIZE = 4;
 
         private bool _isEnabled = false;
-        private ConcurrentDropoutQueue<SaveState> saveStates = 
+        private bool _includeTicks = false;
+        private ConcurrentDropoutQueue<SaveState> saveStates =
             new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, SaveState.Default);
 
         private Dictionary<EBinding, int[]> keyBinds = new Dictionary<EBinding, int[]>()
@@ -25,12 +24,9 @@ namespace JumpKingSaveStates
             { EBinding.DeletePos, new int[] { (int)Keys.Delete } },
         };
 
-        public bool TryAddSaveState(float x, float y, int screen)
+        public bool TryAddSaveState(float x, float y, int ticks)
         {
-            if (!uint.TryParse(screen.ToString(), out uint uScreen))
-                return false;
-
-            var saveState = new SaveState(x, y, uScreen);
+            var saveState = new SaveState(x, y, ticks);
             if (!SaveStates.IsEmpty)
             {
                 if (SaveStates.Last().Equals(saveState))
@@ -89,28 +85,26 @@ namespace JumpKingSaveStates
             }
         }
 
+        public bool IncludeTicks
+        {
+            get => _includeTicks;
+            set
+            {
+                _includeTicks = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Binding[] Bindings
         {
-            get
-            {
-                // ugly ass code
-                List<Binding> bindings = new List<Binding>();
-                keyBinds.ToList().ForEach((kvp) =>
-                {
-                    bindings.Add(new Binding(kvp));
-                });
-                return bindings.ToArray();
-            }
+            get => keyBinds.Select(kvp => new Binding(kvp)).ToArray();
             set => keyBinds = value.ToDictionary(x => x.Bind, x => x.Keys);
         }
 
         public SaveState[] Saves
         {
             get => saveStates.ToArray();
-            set
-            {
-                saveStates = new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, value);
-            }
+            set => saveStates = new ConcurrentDropoutQueue<SaveState>(MAX_QUEUE_SIZE, value);
         }
 
         #region INotifyPropertyChanged implementation
@@ -125,18 +119,18 @@ namespace JumpKingSaveStates
 
     public struct SaveState
     {
-        public SaveState(float x, float y, uint screen)
+        public SaveState(float x, float y, int ticks)
         {
             X = x;
             Y = y;
-            Screen = screen;
+            Ticks = ticks;
         }
 
         public float X;
         public float Y;
-        public uint Screen;
+        public int Ticks;
 
-        public static SaveState Default => new SaveState(231, 302, 1);
+        public static SaveState Default => new SaveState(231, 302, 0);
     }
 
     public struct Binding

@@ -1,26 +1,18 @@
 ﻿using BehaviorTree;
 using EntityComponent;
 using EntityComponent.BT;
-using HarmonyLib;
 using JumpKing;
 using JumpKing.Controller;
 using JumpKing.PauseMenu;
 using JumpKing.PauseMenu.BT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JumpKingSaveStates.Menu
 {
     public class CustomBindDisplay : EntityBTNode, IMenuItem, UnSelectable
     {
-        private EBinding m_button;
+        private readonly EBinding m_button;
         private SpriteFont Font => Game1.instance.contentManager.font.MenuFontSmall;
 
         public CustomBindDisplay(Entity p_entity, EBinding p_button)
